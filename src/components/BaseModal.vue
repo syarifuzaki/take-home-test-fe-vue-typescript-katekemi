@@ -1,4 +1,3 @@
-<!-- src/components/BaseModal.vue -->
 <template>
   <Teleport to="body">
     <div

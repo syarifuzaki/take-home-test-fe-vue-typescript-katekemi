@@ -1,4 +1,3 @@
-<!-- src/components/AppSidebar.vue -->
 <template>
   <!-- Sidebar overlay for mobile -->
   <div

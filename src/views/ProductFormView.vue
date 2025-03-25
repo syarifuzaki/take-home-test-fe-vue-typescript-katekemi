@@ -1,4 +1,3 @@
-<!-- src/views/ProductFormView.vue -->
 <template>
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
@@ -137,6 +136,8 @@ import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useProductStore } from '@/stores/productStore'
 import type { Product } from '@/stores/productStore'
 import { storeToRefs } from 'pinia'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 
 const route = useRoute()
 const router = useRouter()
@@ -175,7 +176,11 @@ onMounted(async () => {
       }
     } catch (error) {
       console.error('Failed to load product:', error)
-      alert('Failed to load product data. Please try again.')
+      toast('Failed to load product data. Please try again.', {
+        theme: 'dark',
+        type: 'error',
+        dangerouslyHTMLString: true,
+      })
     }
   }
 })
@@ -188,18 +193,30 @@ async function handleSubmit() {
     if (isEditMode.value && productId.value) {
       // Update existing product
       await updateProduct(productId.value, form)
-      alert('Product updated successfully!')
+      toast('Product updated successfully!', {
+        theme: 'dark',
+        type: 'success',
+        dangerouslyHTMLString: true,
+      })
     } else {
       // Add new product
       await addProduct(form)
-      alert('Product added successfully!')
+      toast('Product added successfully!', {
+        theme: 'dark',
+        type: 'success',
+        dangerouslyHTMLString: true,
+      })
     }
 
     // Navigate back to the product list
     router.push({ name: 'products' })
   } catch (error) {
     console.error('Failed to save product:', error)
-    alert('Failed to save product. Please try again.')
+    toast('Failed to save product. Please try again.', {
+      theme: 'dark',
+      type: 'error',
+      dangerouslyHTMLString: true,
+    })
   } finally {
     submitting.value = false
   }

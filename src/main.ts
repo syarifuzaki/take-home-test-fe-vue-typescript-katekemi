@@ -5,6 +5,7 @@ import './style.css'
 import router from './router'
 import pinia from './plugins/pinia-persistence'
 import VueClickAway  from 'vue3-click-away'
+import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify'
 
 // Import translations
 import en from './locales/en.json'
@@ -31,5 +32,8 @@ app.use(pinia)
 app.use(router)
 app.use(i18n)
 app.use(VueClickAway)
+app.use(Vue3Toastify, {
+  autoClose: 3000,
+} as ToastContainerOptions)
 
 app.mount('#app')

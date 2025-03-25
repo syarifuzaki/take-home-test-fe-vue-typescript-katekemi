@@ -1,4 +1,3 @@
-<!-- src/components/BaseIcon.vue -->
 <template>
   <Icon
     :icon="name"

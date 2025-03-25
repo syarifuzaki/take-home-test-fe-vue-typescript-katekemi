@@ -1,4 +1,3 @@
-<!-- src/views/PokemonListView.vue -->
 <template>
   <div class="p-6">
     <!-- Header Section -->

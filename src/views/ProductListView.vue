@@ -1,4 +1,3 @@
-<!-- src/views/ProductListView.vue -->
 <template>
   <div class="p-6">
     <!-- Header Section -->
@@ -62,7 +61,7 @@
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16"
             >
-              ID
+              No
             </th>
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24"
@@ -167,12 +166,12 @@
             </td>
           </tr>
           <tr
-            v-for="product in paginatedProducts"
+            v-for="(product, index) in paginatedProducts"
             :key="product.id"
             class="hover:bg-gray-50"
           >
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-              {{ product.id }}
+              {{ (currentPage - 1) * itemsPerPage + index + 1 }}
             </td>
             <td class="px-6 py-4 whitespace-nowrap">
               <img
@@ -330,6 +329,8 @@ import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useProductStore } from '@/stores/productStore'
 import { storeToRefs } from 'pinia'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 
 const productStore = useProductStore()
 const {
@@ -363,9 +364,17 @@ async function handleDelete(id: number): Promise<void> {
   if (confirm('Are you sure you want to delete this product?')) {
     try {
       await deleteProduct(id)
-      alert('Product deleted successfully!')
+      toast('Product deleted successfully!', {
+        theme: 'dark',
+        type: 'success',
+        dangerouslyHTMLString: true,
+      })
     } catch (error) {
-      alert('Error deleting product. Please try again.')
+      toast('Error deleting product. Please try again.', {
+        theme: 'dark',
+        type: 'error',
+        dangerouslyHTMLString: true,
+      })
     }
   }
 }
@@ -389,5 +398,7 @@ function toggleSort(field: string) {
 }
 
 // Watch for changes in pagination to trigger data refresh
-watch([currentPage, itemsPerPage], () => {})
+watch([itemsPerPage], () => {
+  setCurrentPage(1)
+})
 </script>
