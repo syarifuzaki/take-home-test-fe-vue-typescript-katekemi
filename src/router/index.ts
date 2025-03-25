@@ -4,6 +4,7 @@ import DashboardView from '@/views/DashboardView.vue'
 import BerryListView from '@/views/BerryListView.vue'
 import BerryDetailView from '@/views/BerryDetailView.vue'
 import BerryFormView from '@/views/BerryFormView.vue'
+import PokemonListView from '@/views/PokemonListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/berries/edit/:id',
       name: 'berry-edit',
       component: BerryFormView
+    },
+    {
+      path: '/pokemon',
+      name: 'pokemon',
+      component: PokemonListView
     }
   ]
 })
