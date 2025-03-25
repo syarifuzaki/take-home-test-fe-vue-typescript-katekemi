@@ -368,7 +368,7 @@ import { useRoute, useRouter } from 'vue-router'
 import BaseIcon from '../components/BaseIcon.vue'
 import SkeletonLoader from '../components/SkeletonLoader.vue'
 import BaseModal from '../components/BaseModal.vue'
-import { useBerryStore } from '../stores/berryStore'
+import { useBerryStore } from '@/stores/berrystore.ts'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
