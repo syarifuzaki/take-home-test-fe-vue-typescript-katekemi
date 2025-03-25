@@ -138,7 +138,9 @@ import type { Product } from '@/stores/productStore'
 import { storeToRefs } from 'pinia'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const productStore = useProductStore()

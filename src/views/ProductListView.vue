@@ -331,7 +331,9 @@ import { useProductStore } from '@/stores/productStore'
 import { storeToRefs } from 'pinia'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const productStore = useProductStore()
 const {
   fetchProducts,

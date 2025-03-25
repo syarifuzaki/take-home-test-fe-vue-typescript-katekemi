@@ -30,7 +30,9 @@
         <div class="grow">
           <!-- Dashboard Section -->
           <div class="mb-4 px-4">
-            <p class="text-gray-400 text-xs uppercase mb-2 pl-2">Dashboard</p>
+            <!-- <p class="text-gray-400 text-xs uppercase mb-2 pl-2">
+              {{ t('nav.dashboard') }}
+            </p> -->
             <router-link
               :to="{ name: 'dashboard' }"
               :class="[
@@ -41,13 +43,13 @@
               ]"
             >
               <BaseIcon name="mdi:view-dashboard" class="mr-3" size="20" />
-              <span>Dashboard</span>
+              <span>{{ t('nav.dashboard') }}</span>
             </router-link>
           </div>
 
           <!-- Data Management Section -->
           <div class="mb-4 px-4">
-            <p class="text-gray-400 text-xs uppercase mb-2 pl-2">Data Management</p>
+            <!-- <p class="text-gray-400 text-xs uppercase mb-2 pl-2">Data Management</p> -->
 
             <div>
               <button
@@ -65,7 +67,7 @@
               >
                 <div class="flex items-center flex-grow">
                   <BaseIcon name="mdi:pokeball" class="mr-3" size="20" />
-                  <span>Module</span>
+                  <span>{{ t('nav.modules') }}</span>
                 </div>
                 <BaseIcon
                   :name="subMenuOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'"
@@ -91,7 +93,7 @@
                   ]"
                 >
                   <BaseIcon name="mdi:format-list-bulleted" class="mr-2" size="16" />
-                  <span>Products</span>
+                  <span>{{ t('nav.products') }}</span>
                 </router-link>
 
                 <router-link
@@ -104,7 +106,7 @@
                   ]"
                 >
                   <BaseIcon name="mdi:fruit-cherries" class="mr-2" size="16" />
-                  <span>Berries</span>
+                  <span>{{ t('nav.berries') }}</span>
                 </router-link>
               </div>
             </div>
@@ -127,7 +129,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import BaseIcon from '@/components/BaseIcon.vue'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps({
   sidebarOpen: Boolean,
   sidebarOpenDesktop: Boolean,

@@ -159,7 +159,9 @@ import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useProductStore } from '@/stores/productStore'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const productStore = useProductStore()

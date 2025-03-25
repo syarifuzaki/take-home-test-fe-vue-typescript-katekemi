@@ -1,19 +1,129 @@
 {
   "nav": {
-    "dashboard": "Home",
-    "about": "About"
+    "dashboard": "Dashboard",
+    "modules": "Modules",
+    "products": "Products",
+    "berries": "Berries"
   },
   "dashboard": {
     "title": "Welcome to Your Vue.js Application",
     "description": "A modern Vue.js 3 application with TypeScript, Tailwind CSS, Pinia, and i18n support.",
     "button": "Learn More"
   },
-  "about": {
-    "title": "About This Project",
-    "description": "This project was created with Vue 3, TypeScript, Tailwind CSS, and Pinia for state management."
-  },
   "language": {
     "en": "English",
     "id": "Indonesian"
+  },
+  "berries": {
+    "title": "Berry Database",
+    "subtitle": "Explore the world of Pokémon Berries",
+    "searchPlaceholder": "Search Berries by name...",
+    "sort": "Sort",
+    "show": "Show",
+    "itemsPerPage": "items per page",
+    "noResults": {
+      "title": "No Berries Found",
+      "description": "Try adjusting your search criteria"
+    },
+    "table": {
+      "number": "No",
+      "name": "Name",
+      "actions": "Actions"
+    },
+    "pagination": {
+      "showing": "Showing {{from}} to {{to}} of {{total}} items"
+    },
+    "details": {
+      "title": "Berry Details",
+      "information": "Berry Information",
+      "growthTime": "Growth Time",
+      "maxHarvest": "Max Harvest",
+      "size": "Size",
+      "smoothness": "Smoothness",
+      "soilDryness": "Soil Dryness",
+      "firmness": "Firmness",
+      "flavorProfile": "Flavor Profile",
+      "flavorPotency": "Flavor Potency",
+      "hours": "hours",
+      "mm": "mm",
+      "close": "Close"
+    }
+  },
+  "products": {
+    "detail": {
+      "title": "Product Details",
+      "selectProduct": "Select Product",
+      "navigateButton": "Go",
+      "description": "Description",
+      "productDetails": "Product Details",
+      "category": "Category",
+      "productId": "Product ID",
+      "rating": "Rating",
+      "reviews": "Reviews",
+      "addToCart": "Add to Cart",
+      "edit": "Edit",
+      "noProduct": "No product selected or product not found"
+    },
+    "form": {
+      "title": {
+        "add": "Add Product",
+        "edit": "Edit Product"
+      },
+      "labels": {
+        "title": "Title",
+        "price": "Price",
+        "description": "Description",
+        "category": "Category",
+        "image": "Image URL"
+      },
+      "placeholders": {
+        "title": "Product title",
+        "price": "0.00",
+        "description": "Product description",
+        "image": "https://example.com/image.jpg"
+      },
+      "categoryOptions": {
+        "electronics": "Electronics",
+        "jewelery": "Jewelry",
+        "mens": "Men's Clothing",
+        "womens": "Women's Clothing"
+      },
+      "imagePreview": "Image Preview",
+      "submit": {
+        "add": "Add Product",
+        "edit": "Update Product"
+      },
+      "toast": {
+        "successAdd": "Product added successfully!",
+        "successUpdate": "Product updated successfully!",
+        "error": "Failed to save product. Please try again."
+      }
+    },
+    "list": {
+      "title": "Products Database",
+      "subtitle": "Explore the products",
+      "addButton": "Add Product",
+      "searchPlaceholder": "Search products...",
+      "tableHeaders": {
+        "number": "No",
+        "image": "Image",
+        "name": "Name",
+        "category": "Category",
+        "price": "Price",
+        "actions": "Actions"
+      },
+      "noProducts": "No products found. Try adjusting your search.",
+      "deleteConfirmation": "Are you sure you want to delete this product?",
+      "deleteSuccess": "Product deleted successfully!",
+      "deleteError": "Error deleting product. Please try again."
+    }
+  },
+  "common": {
+    "viewDetails": "View Details",
+    "loading": "Loading...",
+    "error": "An error occurred"
+  },
+  "footer": {
+    "createdBy": "Created by"
   }
 }

@@ -5,8 +5,8 @@
       class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4"
     >
       <div>
-        <h1 class="text-2xl font-bold text-primary-navy">Berry Database</h1>
-        <p class="text-gray-600 mt-1">Explore the world of Pokémon Berries</p>
+        <h1 class="text-2xl font-bold text-primary-navy">{{ t('berries.title') }}</h1>
+        <p class="text-gray-600 mt-1">{{ t('berries.subtitle') }}</p>
       </div>
     </div>
 
@@ -24,7 +24,7 @@
             <input
               v-model="localSearchQuery"
               type="text"
-              placeholder="Search Berries by name..."
+              :placeholder="t('berries.searchPlaceholder')"
               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent"
               @input="handleSearchInput"
             />
@@ -34,7 +34,7 @@
         <div class="flex flex-wrap gap-3">
           <!-- Sort Order -->
           <div class="flex items-center space-x-2">
-            <label class="text-sm text-gray-700">Sort:</label>
+            <label class="text-sm text-gray-700">{{ t('berries.sort') }}:</label>
             <div class="inline-flex rounded-md shadow-sm">
               <button
                 @click="handleSortChange('asc')"
@@ -63,7 +63,7 @@
 
           <!-- Items Per Page -->
           <div class="flex items-center space-x-2">
-            <label class="text-sm text-gray-700">Show:</label>
+            <label class="text-sm text-gray-700">{{ t('berries.show') }}:</label>
             <select
               v-model="localItemsPerPage"
               class="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent pr-8"
@@ -86,8 +86,10 @@
         <div class="mx-auto w-24 h-24 text-gray-400 mb-4">
           <BaseIcon name="mdi:grain" size="96" />
         </div>
-        <h3 class="text-lg font-medium text-gray-700">No Berries Found</h3>
-        <p class="text-gray-500 mt-2">Try adjusting your search criteria</p>
+        <h3 class="text-lg font-medium text-gray-700">
+          {{ t('berries.noResults.title') }}
+        </h3>
+        <p class="text-gray-500 mt-2">{{ t('berries.noResults.descriptions') }}</p>
       </div>
 
       <div v-else class="overflow-x-auto">
@@ -97,17 +99,17 @@
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16"
               >
-                No
+                {{ t('berries.table.number') }}
               </th>
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Name
+                {{ t('berries.table.name') }}
               </th>
               <th
                 class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32"
               >
-                Actions
+                {{ t('berries.table.actions') }}
               </th>
             </tr>
           </thead>
@@ -135,7 +137,7 @@
                   <button
                     @click="showDetails(berry.url)"
                     class="text-blue-600 hover:text-blue-800 transition-colors"
-                    title="View Details"
+                    :title="t('berries.common.viewDetails')"
                   >
                     <BaseIcon name="mdi:eye" size="20" />
                   </button>
@@ -150,6 +152,13 @@
     <!-- Pagination -->
     <div class="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
       <div class="text-sm text-gray-700 order-2 md:order-1">
+        <!-- {{
+          t('berries.pagination.showing', {
+            from: filteredBerries.length ? (currentPage - 1) * localItemsPerPage + 1 : 0,
+            to: Math.min(currentPage * localItemsPerPage, totalCount),
+            total: totalCount,
+          })
+        }} -->
         Showing
         {{ filteredBerries.length ? (currentPage - 1) * localItemsPerPage + 1 : 0 }}-{{
           Math.min(currentPage * localItemsPerPage, totalCount)
@@ -258,7 +267,7 @@
       :title="
         selectedBerry?.name
           ? formatBerryName(selectedBerry.name) + ' #' + selectedBerry.id
-          : 'Berry Details'
+          : t('berries.details.title')
       "
       size="large"
     >
@@ -270,26 +279,32 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Berry Details -->
           <div>
-            <h3 class="font-medium text-gray-900 mb-4">Berry Information</h3>
+            <h3 class="font-medium text-gray-900 mb-4">
+              {{ t('berries.details.information') }}
+            </h3>
             <div class="bg-gray-50 rounded-md p-4 space-y-3">
               <div class="flex justify-between">
-                <span class="text-gray-600">Growth Time:</span>
-                <span class="font-medium">{{ selectedBerry.growth_time }} hours</span>
+                <span class="text-gray-600">{{ t('berries.details.growthTime') }}:</span>
+                <span class="font-medium"
+                  >{{ selectedBerry.growth_time }} {{ t('berries.details.hours') }}</span
+                >
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600">Max Harvest:</span>
+                <span class="text-gray-600">{{ t('berries.details.maxHarvest') }}:</span>
                 <span class="font-medium">{{ selectedBerry.max_harvest }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600">Size:</span>
-                <span class="font-medium">{{ selectedBerry.size }} mm</span>
+                <span class="text-gray-600">{{ t('berries.details.size') }}:</span>
+                <span class="font-medium"
+                  >{{ selectedBerry.size }} {{ t('berries.details.mm') }}</span
+                >
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600">Smoothness:</span>
+                <span class="text-gray-600">{{ t('berries.details.smoothness') }}:</span>
                 <span class="font-medium">{{ selectedBerry.smoothness }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600">Soil Dryness:</span>
+                <span class="text-gray-600">{{ t('berries.details.soilDryness') }}:</span>
                 <span class="font-medium">{{ selectedBerry.soil_dryness }}</span>
               </div>
             </div>
@@ -297,17 +312,21 @@
 
           <!-- Flavors and Firmness -->
           <div>
-            <h3 class="font-medium text-gray-900 mb-4">Flavor Profile</h3>
+            <h3 class="font-medium text-gray-900 mb-4">
+              {{ t('berries.details.flavorProfile') }}
+            </h3>
             <div class="bg-gray-50 rounded-md p-4">
               <div class="mb-4">
-                <span class="text-gray-600">Firmness:</span>
+                <span class="text-gray-600">{{ t('berries.details.firmness') }}:</span>
                 <span class="font-medium ml-2">
                   {{ formatBerryName(selectedBerry.firmness.name) }}
                 </span>
               </div>
 
               <div>
-                <h4 class="text-sm font-medium text-gray-700 mb-2">Flavor Potency</h4>
+                <h4 class="text-sm font-medium text-gray-700 mb-2">
+                  {{ t('berries.details.flavorPotency') }}
+                </h4>
                 <ul class="space-y-2">
                   <li
                     v-for="flavor in selectedBerry.flavors"
@@ -336,7 +355,7 @@
           @click="closeModal"
           class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-md transition-colors border"
         >
-          Close
+          {{ t('berries.details.close') }}
         </button>
       </template>
     </BaseModal>
@@ -351,7 +370,9 @@ import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import BaseModal from '@/components/BaseModal.vue'
 import { useBerryStore } from '@/stores/berryStore'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const berryStore = useBerryStore()

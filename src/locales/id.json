@@ -1,19 +1,129 @@
 {
   "nav": {
     "dashboard": "Beranda",
-    "about": "Tentang"
+    "modules": "Modul",
+    "products": "Produk",
+    "berries": "Berry"
   },
   "dashboard": {
     "title": "Selamat Datang di Aplikasi Vue.js Anda",
     "description": "Aplikasi Vue.js 3 modern dengan TypeScript, Tailwind CSS, Pinia, dan dukungan i18n.",
     "button": "Pelajari Lebih Lanjut"
   },
-  "about": {
-    "title": "Tentang Proyek Ini",
-    "description": "Proyek ini dibuat dengan Vue 3, TypeScript, Tailwind CSS, dan Pinia untuk manajemen state."
-  },
   "language": {
     "en": "Bahasa Inggris",
     "id": "Bahasa Indonesia"
+  },
+  "berries": {
+    "title": "Basis Data Berry",
+    "subtitle": "Jelajahi dunia Pokémon Berry",
+    "searchPlaceholder": "Cari Berry berdasarkan nama...",
+    "sort": "Urutkan",
+    "show": "Tampilkan",
+    "itemsPerPage": "item per halaman",
+    "noResults": {
+      "title": "Tidak Ada Berry Ditemukan",
+      "description": "Coba sesuaikan kriteria pencarian Anda"
+    },
+    "table": {
+      "number": "No",
+      "name": "Nama",
+      "actions": "Aksi"
+    },
+    "pagination": {
+      "showing": "Menampilkan {{from}} hingga {{to}} dari {{total}} item"
+    },
+    "details": {
+      "title": "Detail Berry",
+      "information": "Informasi Berry",
+      "growthTime": "Waktu Tumbuh",
+      "maxHarvest": "Panen Maksimal",
+      "size": "Ukuran",
+      "smoothness": "Kelancaran",
+      "soilDryness": "Kekeringan Tanah",
+      "firmness": "Kekerasan",
+      "flavorProfile": "Profil Rasa",
+      "flavorPotency": "Kekuatan Rasa",
+      "hours": "jam",
+      "mm": "mm",
+      "close": "Tutup"
+    }
+  },
+  "products": {
+    "detail": {
+      "title": "Detail Produk",
+      "selectProduct": "Pilih Produk",
+      "navigateButton": "Pindah",
+      "description": "Deskripsi",
+      "productDetails": "Detail Produk",
+      "category": "Kategori",
+      "productId": "ID Produk",
+      "rating": "Penilaian",
+      "reviews": "Ulasan",
+      "addToCart": "Tambahkan ke Keranjang",
+      "edit": "Edit",
+      "noProduct": "Produk tidak dipilih atau tidak ditemukan"
+    },
+    "form": {
+      "title": {
+        "add": "Tambah Produk",
+        "edit": "Edit Produk"
+      },
+      "labels": {
+        "title": "Judul",
+        "price": "Harga",
+        "description": "Deskripsi",
+        "category": "Kategori",
+        "image": "URL Gambar"
+      },
+      "placeholders": {
+        "title": "Judul produk",
+        "price": "0.00",
+        "description": "Deskripsi produk",
+        "image": "https://example.com/image.jpg"
+      },
+      "categoryOptions": {
+        "electronics": "Elektronik",
+        "jewelery": "Perhiasan",
+        "mens": "Pakaian Pria",
+        "womens": "Pakaian Wanita"
+      },
+      "imagePreview": "Pratinjau Gambar",
+      "submit": {
+        "add": "Tambah Produk",
+        "edit": "Perbarui Produk"
+      },
+      "toast": {
+        "successAdd": "Produk berhasil ditambahkan!",
+        "successUpdate": "Produk berhasil diperbarui!",
+        "error": "Gagal menyimpan produk. Silakan coba lagi."
+      }
+    },
+    "list": {
+      "title": "Basis Data Produk",
+      "subtitle": "Jelajahi produk",
+      "addButton": "Tambah Produk",
+      "searchPlaceholder": "Cari produk...",
+      "tableHeaders": {
+        "number": "No",
+        "image": "Gambar",
+        "name": "Nama",
+        "category": "Kategori",
+        "price": "Harga",
+        "actions": "Aksi"
+      },
+      "noProducts": "Tidak ada produk yang ditemukan. Coba sesuaikan pencarian.",
+      "deleteConfirmation": "Apakah Anda yakin ingin menghapus produk ini?",
+      "deleteSuccess": "Produk berhasil dihapus!",
+      "deleteError": "Gagal menghapus produk. Silakan coba lagi."
+    }
+  },
+  "common": {
+    "viewDetails": "Lihat Detail",
+    "loading": "Memuat...",
+    "error": "Terjadi kesalahan"
+  },
+  "footer": {
+    "createdBy": "Dibuat oleh"
   }
 }
