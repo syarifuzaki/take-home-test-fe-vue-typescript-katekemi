@@ -1,8 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '@/views/DashboardView.vue'
 import BerryListView from '@/views/BerryListView.vue'
-import BerryDetailView from '@/views/BerryDetailView.vue'
-import BerryFormView from '@/views/BerryFormView.vue'
 import ProductListView from '@/views/ProductListView.vue'
 import ProductDetailView from '@/views/ProductDetailView.vue'
 import ProductFormView from '@/views/ProductFormView.vue'
@@ -15,26 +13,6 @@ const router = createRouter({
       path: '/',
       name: 'dashboard',
       component: DashboardView
-    },
-    {
-      path: '/berries',
-      name: 'berries',
-      component: BerryListView
-    },
-    {
-      path: '/berries/:id',
-      name: 'berry-detail',
-      component: BerryDetailView
-    },
-    {
-      path: '/berries/add',
-      name: 'berry-add',
-      component: BerryFormView
-    },
-    {
-      path: '/berries/edit/:id',
-      name: 'berry-edit',
-      component: BerryFormView
     },
     {
       path: '/products',
@@ -55,6 +33,11 @@ const router = createRouter({
       path: '/products/edit/:id',
       name: 'product-edit',
       component: ProductFormView
+    },
+    {
+      path: '/berries',
+      name: 'berries',
+      component: BerryListView
     },
     {
       path: '/pokemon',

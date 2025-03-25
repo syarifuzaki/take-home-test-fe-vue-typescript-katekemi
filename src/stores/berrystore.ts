@@ -1,22 +1,82 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import apiService, { BerryListItem, Berry, Product } from '@/services/api'
+import axios from 'axios'
+
+export interface BerryItem {
+  name: string
+  url: string
+}
+
+export interface BerryListResponse {
+  count: number
+  next: string | null
+  previous: string | null
+  results: BerryItem[]
+}
+
+export interface BerryDetail {
+  id: number
+  name: string
+  growth_time: number
+  max_harvest: number
+  natural_gift_power: number
+  size: number
+  smoothness: number
+  soil_dryness: number
+  firmness: {
+    name: string
+    url: string
+  }
+  flavors: Array<{
+    potency: number
+    flavor: {
+      name: string
+      url: string
+    }
+  }>
+}
 
 export const useBerryStore = defineStore('berry', () => {
   // State
-  const berries = ref<BerryListItem[]>([])
+  const berries = ref<BerryItem[]>([])
+  const rawBerries = ref<BerryItem[]>([])
   const totalCount = ref(0)
   const currentPage = ref(1)
   const itemsPerPage = ref(10)
   const searchQuery = ref('')
   const loading = ref(false)
-  const selectedBerry = ref<Berry | null>(null)
-  const filteredBerries = computed(() => {
-    if (!searchQuery.value) return berries.value
+  const detailLoading = ref(false)
+  const selectedBerry = ref<BerryDetail | null>(null)
+  const modalOpen = ref(false)
+  const sortOrder = ref('asc')
+  const initialized = ref(false)
+
+  // Process raw data - apply filtering and sorting
+  const processData = () => {
+    if (!rawBerries.value.length) return
     
-    return berries.value.filter((berry: any) => 
-      berry.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
+    let result = [...rawBerries.value]
+    
+    // Filter by search query
+    if (searchQuery.value) {
+      result = result.filter(b => 
+        b.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+      )
+    }
+    
+    // Sort by name
+    result = result.sort((a, b) => {
+      return sortOrder.value === 'asc' 
+        ? a.name.localeCompare(b.name) 
+        : b.name.localeCompare(a.name)
+    })
+    
+    berries.value = result
+  }
+  
+  // Computed
+  const filteredBerries = computed(() => {
+    return berries.value
   })
 
   // Get the page count based on total items and items per page
@@ -24,34 +84,46 @@ export const useBerryStore = defineStore('berry', () => {
 
   // Initialize from localStorage
   const initFromStorage = () => {
-    const storedPage = localStorage.getItem('currentPage')
-    const storedItemsPerPage = localStorage.getItem('itemsPerPage')
-    const storedSearchQuery = localStorage.getItem('searchQuery')
+    const storedPage = localStorage.getItem('berryCurrentPage')
+    const storedItemsPerPage = localStorage.getItem('berryItemsPerPage')
+    const storedSearchQuery = localStorage.getItem('berrySearchQuery')
+    const storedSortOrder = localStorage.getItem('berrySortOrder')
     
     if (storedPage) currentPage.value = parseInt(storedPage)
     if (storedItemsPerPage) itemsPerPage.value = parseInt(storedItemsPerPage)
     if (storedSearchQuery) searchQuery.value = storedSearchQuery
+    if (storedSortOrder) sortOrder.value = storedSortOrder
+    
+    initialized.value = true
   }
 
   // Save to localStorage
   const saveToStorage = () => {
-    localStorage.setItem('currentPage', currentPage.value.toString())
-    localStorage.setItem('itemsPerPage', itemsPerPage.value.toString())
-    localStorage.setItem('searchQuery', searchQuery.value)
+    localStorage.setItem('berryCurrentPage', currentPage.value.toString())
+    localStorage.setItem('berryItemsPerPage', itemsPerPage.value.toString())
+    localStorage.setItem('berrySearchQuery', searchQuery.value)
+    localStorage.setItem('berrySortOrder', sortOrder.value)
   }
 
   // Fetch berries with pagination
   const fetchBerries = async () => {
     loading.value = true
     try {
+      // Make sure we've initialized from localStorage before fetching
+      if (!initialized.value) {
+        initFromStorage()
+      }
+      
       const offset = (currentPage.value - 1) * itemsPerPage.value
-      const response = await apiService.getBerries(offset, itemsPerPage.value)
-      berries.value = response.results
-      totalCount.value = response.count
+      const response = await axios.get<BerryListResponse>(
+        `https://pokeapi.co/api/v2/berry?offset=${offset}&limit=${itemsPerPage.value}`
+      )
       
-      // Sort berries by name in ascending order
-      berries.value.sort((a: any, b: any) => a.name.localeCompare(b.name))
+      rawBerries.value = response.data.results
+      totalCount.value = response.data.count
       
+      // Process the data
+      processData()
       saveToStorage()
     } catch (error) {
       console.error('Error fetching berries:', error)
@@ -60,74 +132,37 @@ export const useBerryStore = defineStore('berry', () => {
     }
   }
 
-  // Fetch berry details by ID
-  const fetchBerryDetail = async (id: string | number) => {
-    loading.value = true
+  // Fetch berry details by URL or ID
+  const fetchBerryDetail = async (urlOrId: string) => {
+    detailLoading.value = true
+    
     try {
-      selectedBerry.value = await apiService.getBerryDetail(id)
+      let url = urlOrId
+      
+      // If it's not a full URL, construct it
+      if (!url.startsWith('http')) {
+        url = `https://pokeapi.co/api/v2/berry/${urlOrId}/`
+      }
+      
+      const response = await axios.get<BerryDetail>(url)
+      selectedBerry.value = response.data
     } catch (error) {
       console.error('Error fetching berry details:', error)
     } finally {
-      loading.value = false
+      detailLoading.value = false
     }
   }
 
-  // Fetch berry details by name
-  const fetchBerryByName = async (name: string) => {
-    loading.value = true
-    try {
-      selectedBerry.value = await apiService.getBerryByName(name)
-    } catch (error) {
-      console.error('Error fetching berry by name:', error)
-    } finally {
-      loading.value = false
-    }
+  // Show Berry detail modal
+  const showBerryDetail = (urlOrId: string) => {
+    modalOpen.value = true
+    fetchBerryDetail(urlOrId)
   }
-
-  // Add a new product
-  const addProduct = async (product: Product) => {
-    loading.value = true
-    try {
-      const newProduct = await apiService.addProduct(product)
-      return newProduct
-    } catch (error) {
-      console.error('Error adding product:', error)
-      throw error
-    } finally {
-      loading.value = false
-    }
-  }
-
-  // Update a product
-  const updateProduct = async (id: number, product: Product) => {
-    loading.value = true
-    try {
-      const updatedProduct = await apiService.updateProduct(id, product)
-      return updatedProduct
-    } catch (error) {
-      console.error('Error updating product:', error)
-      throw error
-    } finally {
-      loading.value = false
-    }
-  }
-
-  // Get product by ID (for editing)
-  const getProduct = async (id: number) => {
-    loading.value = true
-    try {
-      return await apiService.getProduct(id)
-    } catch (error) {
-      console.error('Error getting product:', error)
-      throw error
-    } finally {
-      loading.value = false
-    }
-  }
-
+  
   // Set search query
   const setSearchQuery = (query: string) => {
     searchQuery.value = query
+    processData()
     saveToStorage()
   }
 
@@ -135,6 +170,7 @@ export const useBerryStore = defineStore('berry', () => {
   const setCurrentPage = (page: number) => {
     currentPage.value = page
     saveToStorage()
+    fetchBerries()
   }
 
   // Set items per page
@@ -142,6 +178,19 @@ export const useBerryStore = defineStore('berry', () => {
     itemsPerPage.value = items
     currentPage.value = 1 // Reset to first page when changing items per page
     saveToStorage()
+    fetchBerries()
+  }
+  
+  // Set sort order
+  const setSortOrder = (order: 'asc' | 'desc') => {
+    sortOrder.value = order
+    processData()
+    saveToStorage()
+  }
+
+  // Close modal
+  const closeModal = () => {
+    modalOpen.value = false
   }
 
   return {
@@ -152,17 +201,20 @@ export const useBerryStore = defineStore('berry', () => {
     itemsPerPage,
     searchQuery,
     loading,
+    detailLoading,
     selectedBerry,
+    modalOpen,
+    sortOrder,
     pageCount,
     fetchBerries,
     fetchBerryDetail,
-    fetchBerryByName,
-    addProduct,
-    updateProduct,
-    getProduct,
+    showBerryDetail,
     setSearchQuery,
     setCurrentPage,
     setItemsPerPage,
-    initFromStorage
+    closeModal,
+    initFromStorage,
+    setSortOrder,
+    processData
   }
 })

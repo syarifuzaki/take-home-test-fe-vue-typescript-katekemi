@@ -96,10 +96,10 @@
                 </router-link>
 
                 <router-link
-                  :to="{ name: 'pokemon' }"
+                  :to="{ name: 'berries' }"
                   :class="[
                     'flex items-center p-2 text-sm  transition-colors',
-                    $route.name === 'pokemon'
+                    $route.name === 'berries'
                       ? 'text-primary-orange border border-primary-orange hover:bg-orange-400/50 hover:text-white rounded-md'
                       : 'text-gray-300 hover:text-white',
                   ]"
