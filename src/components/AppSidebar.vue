@@ -59,7 +59,7 @@
                   $route.name === 'product-detail' ||
                   $route.name === 'product-add' ||
                   $route.name === 'product-edit' ||
-                  $route.name === 'pokemon'
+                  $route.name === 'berries'
                     ? 'bg-primary-orange text-white hover:bg-orange-600'
                     : 'hover:bg-gray-700',
                 ]"

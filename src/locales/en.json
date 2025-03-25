@@ -1,9 +1,9 @@
 {
   "nav": {
-    "home": "Home",
+    "dashboard": "Home",
     "about": "About"
   },
-  "home": {
+  "dashboard": {
     "title": "Welcome to Your Vue.js Application",
     "description": "A modern Vue.js 3 application with TypeScript, Tailwind CSS, Pinia, and i18n support.",
     "button": "Learn More"

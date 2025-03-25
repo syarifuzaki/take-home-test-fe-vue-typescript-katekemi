@@ -27,6 +27,7 @@
     </button>
 
     <div class="flex items-center gap-2">
+      <LanguageSwitcher />
       <a
         href="https://github.com/syarifuzaki/take-home-test-fe-vue-typescript-katekemi"
         target="_blank"
@@ -47,28 +48,6 @@
           Admin User
           <BaseIcon name="fa6-solid:angle-down" size="16" class="mr-1" />
         </button>
-        <!-- <div
-          v-if="showProfileMenu"
-          class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white ring-1 shadow-lg ring-black/5 focus:outline-hidden"
-        >
-          <div class="py-1">
-            <button
-              type="button"
-              class="flex items-center gap-4 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              @click="showProfileModal = true"
-            >
-              <BaseIcon name="fa6-solid:user" size="16" />
-              User Profile
-            </button>
-            <button
-              type="button"
-              class="flex items-center gap-4 w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-red-50 hover:text-primary-red"
-            >
-              <BaseIcon name="fa6-solid:arrow-right-from-bracket" size="16" />
-              Logout
-            </button>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
@@ -76,6 +55,7 @@
 
 <script setup lang="ts">
 import BaseIcon from '@/components/BaseIcon.vue'
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
 const emit = defineEmits(['toggleSidebar', 'toggleSidebarDesktop', 'toggleProfileMenu'])
 </script>

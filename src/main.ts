@@ -4,6 +4,7 @@ import App from './App.vue'
 import './style.css'
 import router from './router'
 import pinia from './plugins/pinia-persistence'
+import VueClickAway  from 'vue3-click-away'
 
 // Import translations
 import en from './locales/en.json'
@@ -29,5 +30,6 @@ const app = createApp(App)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
+app.use(VueClickAway)
 
 app.mount('#app')

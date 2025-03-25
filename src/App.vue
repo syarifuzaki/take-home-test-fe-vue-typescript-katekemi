@@ -31,7 +31,6 @@
             {{ t('nav.about') }}
           </router-link>
         </div>
-        <LanguageSwitcher />
       </nav>
     </header>
     
@@ -53,7 +52,6 @@ import { useI18n } from 'vue-i18n'
 import AppFooter from '@/components/AppFooter.vue'
 import AppSidebar from '@/components/AppSidebar.vue'
 import AppTopbar from '@/components/AppTopbar.vue'
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 
 const { t } = useI18n()
 

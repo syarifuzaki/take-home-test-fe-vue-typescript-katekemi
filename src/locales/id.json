@@ -1,9 +1,9 @@
 {
   "nav": {
-    "home": "Beranda",
+    "dashboard": "Beranda",
     "about": "Tentang"
   },
-  "home": {
+  "dashboard": {
     "title": "Selamat Datang di Aplikasi Vue.js Anda",
     "description": "Aplikasi Vue.js 3 modern dengan TypeScript, Tailwind CSS, Pinia, dan dukungan i18n.",
     "button": "Pelajari Lebih Lanjut"
