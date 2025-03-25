@@ -11,8 +11,9 @@
         'text-green-600': color === 'success',
         'text-yellow-500': color === 'warning',
         'text-red-600': color === 'danger',
-        'text-gray-600': color === 'secondary'
-      }
+        'text-gray-600': color === 'secondary',
+        'text-white': color === 'white',
+      },
     ]"
   />
 </template>
@@ -30,6 +31,6 @@ interface Props {
 withDefaults(defineProps<Props>(), {
   size: 24,
   color: null,
-  className: ''
+  className: '',
 })
 </script>

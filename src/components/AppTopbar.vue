@@ -3,15 +3,25 @@
   <div class="flex justify-between items-center p-4 sticky top-0 bg-gray-100 z-10">
     <button
       @click="emit('toggleSidebar')"
-      class="mr-4 focus:outline-none rounded-full w-10 h-10 flex md:hidden justify-center items-center hover:bg-gray-200 duration-300"
+      class="mr-4 focus:outline-none rounded-full w-10 h-10 flex md:hidden justify-center items-center bg-gray-200 hover:bg-gray-300 duration-300"
     >
-      <i class="fa-solid fa-bars-staggered text-xl"></i>
+      <BaseIcon
+        name="fa6-solid:bars-staggered"
+        size="20"
+        color=""
+        class="text-primary-navy"
+      />
     </button>
     <button
       @click="emit('toggleSidebarDesktop')"
-      class="mr-4 focus:outline-none rounded-full w-10 h-10 hidden md:flex justify-center items-center hover:bg-gray-200 duration-300"
+      class="mr-4 focus:outline-none rounded-full w-10 h-10 hidden md:flex justify-center items-center bg-gray-200 hover:bg-gray-300 duration-300"
     >
-      <i class="fa-solid fa-bars-staggered text-xl"></i>
+      <BaseIcon
+        name="fa6-solid:bars-staggered"
+        size="20"
+        color=""
+        class="text-primary-navy"
+      />
     </button>
 
     <div class="flex items-center gap-2">
@@ -20,7 +30,7 @@
         target="_blank"
         class="bg-gray-200 hover:bg-gray-300 rounded-full w-10 h-10 flex items-center justify-center"
       >
-        <i class="fa-brands fa-github text-xl"></i>
+        <BaseIcon name="fa6-brands:github" size="20" color="" class="text-primary-navy" />
       </a>
       <div class="relative">
         <button
@@ -33,7 +43,7 @@
             A
           </div>
           Admin User
-          <i class="fa-solid fa-chevron-down text-sm mr-1"></i>
+          <BaseIcon name="fa6-solid:angle-down" size="16" class="mr-1" />
         </button>
         <!-- <div
           v-if="showProfileMenu"
@@ -45,14 +55,14 @@
               class="flex items-center gap-4 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               @click="showProfileModal = true"
             >
-              <i class="fa-solid fa-user text-sm"></i>
+              <BaseIcon name="fa6-solid:user" size="16" />
               User Profile
             </button>
             <button
               type="button"
               class="flex items-center gap-4 w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-red-50 hover:text-primary-red"
             >
-              <i class="fas fa-sign-out-alt text-sm"></i>
+              <BaseIcon name="fa6-solid:arrow-right-from-bracket" size="16" />
               Logout
             </button>
           </div>
@@ -63,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-// const props = defineProps({
-// })
+import BaseIcon from '@/components/BaseIcon.vue'
+
 const emit = defineEmits(['toggleSidebar', 'toggleSidebarDesktop', 'toggleProfileMenu'])
 </script>

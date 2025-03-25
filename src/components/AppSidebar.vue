@@ -36,7 +36,7 @@
                   : 'hover:bg-gray-700',
               ]"
             >
-              <i class="fas fa-home mr-3"></i>
+              <BaseIcon name="fa6-solid:house" size="20" color="white" class="mr-3" />
               <span>Dashboard</span>
             </router-link>
           </div>
@@ -55,7 +55,6 @@
                   : 'hover:bg-gray-700',
               ]"
             >
-              <i class="fas fa-users mr-3"></i>
               <span>Berries</span>
             </router-link>
           </div>
@@ -66,7 +65,7 @@
             href="#"
             class="flex items-center p-2 rounded hover:bg-red-500/20 text-red-300"
           >
-            <i class="fas fa-sign-out-alt mr-3"></i>
+            <BaseIcon name="fa6-solid:arrow-right-from-bracket" size="20" class="mr-3" />
             <span>Logout</span>
           </a>
         </div>
