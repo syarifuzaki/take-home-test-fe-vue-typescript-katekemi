@@ -1,0 +1,162 @@
+<!-- src/views/ProductDetailView.vue -->
+<template>
+  <div class="p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">Product Details</h1>
+      <router-link
+        :to="{ name: 'products' }"
+        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md flex items-center"
+      >
+        <BaseIcon name="mdi:arrow-left" size="20" class="mr-1" />
+        Back to List
+      </router-link>
+    </div>
+
+    <!-- Loading State -->
+    <div v-if="loading" class="bg-white rounded-md shadow p-6">
+      <SkeletonLoader type="detail" />
+    </div>
+
+    <!-- Product Details -->
+    <div v-else-if="selectedProduct" class="bg-white rounded-md shadow">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+        <!-- Product Image -->
+        <div class="flex justify-center items-center">
+          <img
+            :src="selectedProduct.image"
+            :alt="selectedProduct.title"
+            class="max-h-96 object-contain"
+          />
+        </div>
+
+        <!-- Product Information -->
+        <div class="space-y-6">
+          <div>
+            <h2 class="text-2xl font-bold text-primary-navy mb-2">
+              {{ selectedProduct.title }}
+            </h2>
+            <div class="flex items-center mb-2">
+              <span
+                class="bg-primary-orange text-white px-3 py-1 rounded-full text-sm capitalize"
+              >
+                {{ selectedProduct.category }}
+              </span>
+            </div>
+            <div class="flex items-center space-x-4">
+              <span class="text-2xl font-bold text-gray-900"
+                >${{ selectedProduct.price.toFixed(2) }}</span
+              >
+
+              <!-- Rating -->
+              <div class="flex items-center" v-if="selectedProduct.rating">
+                <div class="flex">
+                  <template v-for="star in 5" :key="star">
+                    <BaseIcon
+                      :name="
+                        star <= Math.round(selectedProduct.rating.rate)
+                          ? 'mdi:star'
+                          : 'mdi:star-outline'
+                      "
+                      size="20"
+                      class="text-yellow-500"
+                    />
+                  </template>
+                </div>
+                <span class="ml-2 text-sm text-gray-600">
+                  {{ selectedProduct.rating.rate }} ({{
+                    selectedProduct.rating.count
+                  }}
+                  reviews)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="text-lg font-medium text-primary-navy mb-2">Description</h3>
+            <p class="text-gray-700">{{ selectedProduct.description }}</p>
+          </div>
+
+          <div class="flex space-x-4">
+            <button
+              class="bg-primary-orange hover:bg-orange-600 text-white px-6 py-2 rounded-md flex items-center"
+            >
+              <BaseIcon name="mdi:cart" size="20" class="mr-2" />
+              Add to Cart
+            </button>
+            <router-link
+              :to="{ name: 'product-edit', params: { id: selectedProduct.id } }"
+              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md flex items-center"
+            >
+              <BaseIcon name="mdi:pencil" size="20" class="mr-2" />
+              Edit
+            </router-link>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Details -->
+      <div class="border-t border-gray-200 p-6">
+        <h3 class="text-lg font-medium text-primary-navy mb-4">Product Details</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex flex-col space-y-2">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Category:</span>
+              <span class="font-medium capitalize">{{ selectedProduct.category }}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Product ID:</span>
+              <span class="font-medium">{{ selectedProduct.id }}</span>
+            </div>
+          </div>
+          <div class="flex flex-col space-y-2" v-if="selectedProduct.rating">
+            <div class="flex justify-between">
+              <span class="text-gray-600">Rating:</span>
+              <span class="font-medium">{{ selectedProduct.rating.rate }}/5</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-600">Reviews:</span>
+              <span class="font-medium">{{ selectedProduct.rating.count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- No Product Selected -->
+    <div v-else class="bg-white rounded-md shadow p-6 text-center py-10 text-gray-500">
+      No product selected or product not found
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import BaseIcon from '@/components/BaseIcon.vue'
+import SkeletonLoader from '@/components/SkeletonLoader.vue'
+import { useProductStore } from '@/stores/productStore'
+import { storeToRefs } from 'pinia'
+
+const route = useRoute()
+const productStore = useProductStore()
+const { fetchProductDetail } = productStore
+const { selectedProduct, loading } = storeToRefs(productStore)
+
+// Load product details when component mounts
+onMounted(async () => {
+  if (route.params.id) {
+    await fetchProductDetail(route.params.id as string)
+  }
+})
+
+// Watch for changes in route and update the product details
+watch(
+  () => route.params.id,
+  async (newId) => {
+    if (newId) {
+      await fetchProductDetail(newId as string)
+    }
+  }
+)
+</script>

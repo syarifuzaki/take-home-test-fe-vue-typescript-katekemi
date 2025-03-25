@@ -4,6 +4,9 @@ import DashboardView from '@/views/DashboardView.vue'
 import BerryListView from '@/views/BerryListView.vue'
 import BerryDetailView from '@/views/BerryDetailView.vue'
 import BerryFormView from '@/views/BerryFormView.vue'
+import ProductListView from '@/views/ProductListView.vue'
+import ProductDetailView from '@/views/ProductDetailView.vue'
+import ProductFormView from '@/views/ProductFormView.vue'
 import PokemonListView from '@/views/PokemonListView.vue'
 
 const router = createRouter({
@@ -33,6 +36,26 @@ const router = createRouter({
       path: '/berries/edit/:id',
       name: 'berry-edit',
       component: BerryFormView
+    },
+    {
+      path: '/products',
+      name: 'products',
+      component: ProductListView
+    },
+    {
+      path: '/products/:id',
+      name: 'product-detail',
+      component: ProductDetailView
+    },
+    {
+      path: '/products/add',
+      name: 'product-add',
+      component: ProductFormView
+    },
+    {
+      path: '/products/edit/:id',
+      name: 'product-edit',
+      component: ProductFormView
     },
     {
       path: '/pokemon',

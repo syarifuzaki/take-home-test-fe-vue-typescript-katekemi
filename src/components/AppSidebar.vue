@@ -50,22 +50,23 @@
           <div class="mb-4 px-4">
             <p class="text-gray-400 text-xs uppercase mb-2 pl-2">Data Management</p>
 
-            <!-- Berries -->
+            <!-- Products -->
             <div class="mb-2">
               <router-link
-                :to="{ name: 'berries' }"
+                :to="{ name: 'products' }"
                 :class="[
                   'flex items-center p-2 rounded-md transition-colors w-full',
-                  $route.name === 'berries' ||
-                  $route.name === 'berry-detail' ||
-                  $route.name === 'berry-add' ||
-                  $route.name === 'berry-edit'
+                  $route.name === 'products' ||
+                  $route.name === 'product-detail' ||
+                  $route.name === 'product-add' ||
+                  $route.name === 'product-edit'
                     ? 'bg-primary-orange text-white hover:bg-orange-600'
                     : 'hover:bg-gray-700',
                 ]"
               >
                 <BaseIcon name="mdi:fruit-cherries" class="mr-3" size="20" />
-                <span>Berries</span>
+                <!-- <BaseIcon name="mdi:fruit-cherries" class="mr-3" size="20" /> -->
+                <span>Soal 1</span>
               </router-link>
             </div>
 
