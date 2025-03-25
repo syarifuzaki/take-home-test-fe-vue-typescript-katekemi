@@ -10,7 +10,7 @@
       sidebarOpenDesktop ? (sidebarOpen ? 'md:ml-64' : 'ml-0 md:ml-64') : 'md:ml-0',
     ]"
   >
-    <div class="p-0 bg-white h-main-content">
+    <div class="p-0 bg-gray-50 h-main-content">
       <app-topbar
         @toggle-sidebar="toggleSidebar"
         @toggle-sidebar-desktop="toggleSidebarDesktop"

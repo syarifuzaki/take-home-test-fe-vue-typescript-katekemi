@@ -12,6 +12,31 @@
       </router-link>
     </div>
 
+    <!-- Product Selection Navigation -->
+    <div class="bg-white rounded-md shadow p-6 mb-6">
+      <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
+        <div class="w-full md:w-2/3">
+          <label class="block text-sm font-medium text-gray-700 mb-1"
+            >Select Product</label
+          >
+          <select
+            v-model="selectedProductId"
+            class="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-primary-orange"
+          >
+            <option v-for="product in products" :key="product.id" :value="product.id">
+              {{ product.title }}
+            </option>
+          </select>
+        </div>
+        <button
+          @click="navigateToProduct"
+          class="mt-4 md:mt-6 bg-primary-orange hover:bg-orange-600 text-white px-4 py-2 rounded-md"
+        >
+          Pindah
+        </button>
+      </div>
+    </div>
+
     <!-- Loading State -->
     <div v-if="loading" class="bg-white rounded-md shadow p-6">
       <SkeletonLoader type="detail" />
@@ -131,24 +156,46 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { onMounted, watch, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useProductStore } from '@/stores/productStore'
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()
+const router = useRouter()
 const productStore = useProductStore()
-const { fetchProductDetail } = productStore
-const { selectedProduct, loading } = storeToRefs(productStore)
+const { fetchProductDetail, fetchProducts } = productStore
+const { selectedProduct, loading, products } = storeToRefs(productStore)
 
-// Load product details when component mounts
+// For the dropdown selection
+const selectedProductId = ref<number | null>(null)
+
+// Load product details and fetch all products for the dropdown when component mounts
 onMounted(async () => {
+  // Fetch all products for the dropdown
+  if (products.value.length === 0) {
+    await fetchProducts()
+  }
+
+  // Fetch current product details
   if (route.params.id) {
     await fetchProductDetail(route.params.id as string)
+    // Set the selectedProductId to the current product id
+    selectedProductId.value = parseInt(route.params.id as string)
   }
 })
+
+// Navigate to the selected product
+function navigateToProduct() {
+  if (selectedProductId.value) {
+    router.push({
+      name: 'product-detail',
+      params: { id: selectedProductId.value },
+    })
+  }
+}
 
 // Watch for changes in route and update the product details
 watch(
@@ -156,6 +203,8 @@ watch(
   async (newId) => {
     if (newId) {
       await fetchProductDetail(newId as string)
+      // Update selectedProductId when the route changes
+      selectedProductId.value = parseInt(newId as string)
     }
   }
 )

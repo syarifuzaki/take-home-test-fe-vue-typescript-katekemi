@@ -1,6 +1,8 @@
 <template>
   <!-- Navbar Content -->
-  <div class="flex justify-between items-center p-4 sticky top-0 bg-gray-100 z-10">
+  <div
+    class="flex justify-between items-center p-4 sticky top-0 bg-primary-navy md:bg-gray-50 z-10 shadow-md"
+  >
     <button
       @click="emit('toggleSidebar')"
       class="mr-4 focus:outline-none rounded-full w-10 h-10 flex md:hidden justify-center items-center bg-gray-200 hover:bg-gray-300 duration-300"
