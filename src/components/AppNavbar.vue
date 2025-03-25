@@ -13,7 +13,7 @@
     </div>
     <div class="flex items-center gap-2">
       <a
-        href="https://github.com/syarifuzaki/frontend-test-hashmicro"
+        href="https://github.com/syarifuzaki/take-home-test-fe-vue-typescript-katekemi"
         target="_blank"
         class="bg-gray-50/10 hover:bg-gray-50/20 rounded-full w-10 h-10 flex items-center justify-center"
       >
