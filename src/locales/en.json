@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About"
+  },
+  "home": {
+    "title": "Welcome to Your Vue.js Application",
+    "description": "A modern Vue.js 3 application with TypeScript, Tailwind CSS, Pinia, and i18n support.",
+    "button": "Learn More"
+  },
+  "about": {
+    "title": "About This Project",
+    "description": "This project was created with Vue 3, TypeScript, Tailwind CSS, and Pinia for state management."
+  },
+  "language": {
+    "en": "English",
+    "id": "Indonesian"
+  }
+}

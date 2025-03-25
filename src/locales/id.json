@@ -1,0 +1,19 @@
+{
+  "nav": {
+    "home": "Beranda",
+    "about": "Tentang"
+  },
+  "home": {
+    "title": "Selamat Datang di Aplikasi Vue.js Anda",
+    "description": "Aplikasi Vue.js 3 modern dengan TypeScript, Tailwind CSS, Pinia, dan dukungan i18n.",
+    "button": "Pelajari Lebih Lanjut"
+  },
+  "about": {
+    "title": "Tentang Proyek Ini",
+    "description": "Proyek ini dibuat dengan Vue 3, TypeScript, Tailwind CSS, dan Pinia untuk manajemen state."
+  },
+  "language": {
+    "en": "Bahasa Inggris",
+    "id": "Bahasa Indonesia"
+  }
+}
