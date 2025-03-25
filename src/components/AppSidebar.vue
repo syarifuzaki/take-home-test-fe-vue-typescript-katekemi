@@ -22,7 +22,7 @@
             class="text-2xl font-medium text-center py-1.5 px-4 flex items-center gap-2"
           >
             <BaseIcon name="mdi:pokeball" size="28" />
-            <span>POKÉMON APP</span>
+            <span>KATEKEMI</span>
           </h1>
         </div>
       </div>
@@ -50,112 +50,66 @@
           <div class="mb-4 px-4">
             <p class="text-gray-400 text-xs uppercase mb-2 pl-2">Data Management</p>
 
-            <!-- Products -->
-            <div class="mb-2">
-              <router-link
-                :to="{ name: 'products' }"
+            <div>
+              <button
+                @click="toggleSubMenu"
                 :class="[
-                  'flex items-center p-2 rounded-md transition-colors w-full',
+                  'flex items-center p-2 rounded-md transition-colors cursor-pointer w-full',
                   $route.name === 'products' ||
                   $route.name === 'product-detail' ||
                   $route.name === 'product-add' ||
-                  $route.name === 'product-edit'
-                    ? 'bg-primary-orange text-white hover:bg-orange-600'
-                    : 'hover:bg-gray-700',
-                ]"
-              >
-                <BaseIcon name="mdi:fruit-cherries" class="mr-3" size="20" />
-                <!-- <BaseIcon name="mdi:fruit-cherries" class="mr-3" size="20" /> -->
-                <span>Soal 1</span>
-              </router-link>
-            </div>
-
-            <!-- Pokémon with collapsible submenu -->
-            <div>
-              <div
-                :class="[
-                  'flex items-center p-2 rounded-md transition-colors cursor-pointer w-full',
+                  $route.name === 'product-edit' ||
                   $route.name === 'pokemon'
                     ? 'bg-primary-orange text-white hover:bg-orange-600'
                     : 'hover:bg-gray-700',
                 ]"
               >
-                <router-link
-                  :to="{ name: 'pokemon' }"
-                  class="flex items-center flex-grow"
-                >
+                <div class="flex items-center flex-grow">
                   <BaseIcon name="mdi:pokeball" class="mr-3" size="20" />
-                  <span>Pokémon</span>
-                </router-link>
-                <button
-                  @click="togglePokemonMenu"
-                  class="text-gray-300 hover:text-white focus:outline-none"
-                >
-                  <BaseIcon
-                    :name="pokemonMenuOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-                    size="20"
-                  />
-                </button>
-              </div>
+                  <span>Module</span>
+                </div>
+                <BaseIcon
+                  :name="subMenuOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'"
+                  size="20"
+                />
+              </button>
 
               <!-- Submenu -->
               <div
-                v-if="pokemonMenuOpen"
-                class="ml-6 mt-1 space-y-1 border-l border-gray-700 pl-2"
+                v-if="subMenuOpen"
+                class="ml-3 mt-3 space-y-3 border-l border-gray-700 pl-2"
               >
                 <router-link
-                  :to="{ name: 'pokemon', query: { filter: 'favorites' } }"
-                  class="flex items-center p-2 text-sm text-gray-300 hover:text-white transition-colors"
-                >
-                  <BaseIcon name="mdi:star" class="mr-2" size="16" />
-                  <span>Favorites</span>
-                </router-link>
-
-                <button
-                  @click="toggleTypeMenu"
-                  class="flex items-center p-2 text-sm text-gray-300 hover:text-white transition-colors w-full"
+                  :to="{ name: 'products' }"
+                  :class="[
+                    'flex items-center p-2 text-sm  transition-colors',
+                    $route.name === 'products' ||
+                    $route.name === 'product-detail' ||
+                    $route.name === 'product-add' ||
+                    $route.name === 'product-edit'
+                      ? 'text-primary-orange border border-primary-orange hover:bg-orange-400/50 hover:text-white rounded-md'
+                      : 'text-gray-300 hover:text-white',
+                  ]"
                 >
                   <BaseIcon name="mdi:format-list-bulleted" class="mr-2" size="16" />
-                  <span>Types</span>
-                  <BaseIcon
-                    :name="typeMenuOpen ? 'mdi:chevron-up' : 'mdi:chevron-down'"
-                    size="16"
-                    class="ml-auto"
-                  />
-                </button>
+                  <span>Products</span>
+                </router-link>
 
-                <!-- Pokémon Types Submenu -->
-                <div v-if="typeMenuOpen" class="ml-4 space-y-1">
-                  <router-link
-                    v-for="type in pokemonTypes"
-                    :key="type.name"
-                    :to="{ name: 'pokemon', query: { type: type.name } }"
-                    class="flex items-center p-1 text-xs text-gray-300 hover:text-white transition-colors"
-                  >
-                    <div :class="['w-2 h-2 rounded-full mr-2', type.color]"></div>
-                    <span>{{ type.displayName }}</span>
-                  </router-link>
-                </div>
+                <router-link
+                  :to="{ name: 'pokemon' }"
+                  :class="[
+                    'flex items-center p-2 text-sm  transition-colors',
+                    $route.name === 'pokemon'
+                      ? 'text-primary-orange border border-primary-orange hover:bg-orange-400/50 hover:text-white rounded-md'
+                      : 'text-gray-300 hover:text-white',
+                  ]"
+                >
+                  <BaseIcon name="mdi:fruit-cherries" class="mr-2" size="16" />
+                  <span>Berries</span>
+                </router-link>
               </div>
             </div>
           </div>
-
-          <!-- Settings Section -->
-          <!-- <div class="mb-4 px-4">
-            <p class="text-gray-400 text-xs uppercase mb-2 pl-2">Settings</p>
-            <router-link
-              :to="{ name: 'about' }"
-              :class="[
-                'flex items-center p-2 rounded-md transition-colors',
-                $route.name === 'about'
-                  ? 'bg-primary-orange text-white hover:bg-orange-600'
-                  : 'hover:bg-gray-700',
-              ]"
-            >
-              <BaseIcon name="mdi:information" class="mr-3" size="20" />
-              <span>About</span>
-            </router-link>
-          </div> -->
         </div>
 
         <div class="mt-2 px-4">
@@ -185,11 +139,11 @@ const props = defineProps({
 const emit = defineEmits(['toggleSidebar'])
 
 // Manage submenu states
-const pokemonMenuOpen = ref(true) // Open by default
+const subMenuOpen = ref(true) // Open by default
 const typeMenuOpen = ref(false)
 
-function togglePokemonMenu() {
-  pokemonMenuOpen.value = !pokemonMenuOpen.value
+function toggleSubMenu() {
+  subMenuOpen.value = !subMenuOpen.value
 }
 
 function toggleTypeMenu() {

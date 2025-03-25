@@ -23,7 +23,7 @@ const API_URL = 'https://fakestoreapi.com'
 const apiService = {
   // Get all products
   async getProducts(): Promise<Product[]> {
-    const response = await axios.get(`${API_URL}/products`)
+    const response = await axios.get(`${API_URL}/products?limit=50`)
     return response.data
   },
 
@@ -52,22 +52,49 @@ const apiService = {
   }
 }
 
-export const useProductStore = defineStore('product', () => {
-  // State
-  const products = ref<Product[]>([])
-  const totalCount = ref(0)
-  const currentPage = ref(1)
-  const itemsPerPage = ref(10)
-  const searchQuery = ref('')
-  const loading = ref(false)
-  const selectedProduct = ref<Product | null>(null)
+export const useProductStore = defineStore('product', 
+  () => {
+    // State
+    const products = ref<Product[]>([])
+    const hasInitiallyFetched = ref(false)
+    const totalCount = ref(0)
+    const currentPage = ref(1)
+    const itemsPerPage = ref(10)
+    const searchQuery = ref('')
+    const sortField = ref('title')
+    const sortOrder = ref<'asc' | 'desc'>('asc')
+    const loading = ref(false)
+    const selectedProduct = ref<Product | null>(null)
   
   const filteredProducts = computed(() => {
-    if (!searchQuery.value) return products.value
+    // First filter by search query
+    let result = products.value
     
-    return products.value.filter((product: any) => 
-      product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
-    )
+    if (searchQuery.value) {
+      result = result.filter((product: any) => 
+        product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
+      )
+    }
+    
+    // Then sort based on current sort settings
+    if (sortField.value) {
+      result = [...result].sort((a: any, b: any) => {
+        let valueA = a[sortField.value]
+        let valueB = b[sortField.value]
+        
+        // Handle string comparisons (case-insensitive)
+        if (typeof valueA === 'string') {
+          valueA = valueA.toLowerCase()
+          valueB = valueB.toLowerCase()
+        }
+        
+        if (valueA < valueB) return sortOrder.value === 'asc' ? -1 : 1
+        if (valueA > valueB) return sortOrder.value === 'asc' ? 1 : -1
+        return 0
+      })
+    }
+    
+    return result
   })
 
   // Get the page count based on total items and items per page
@@ -93,14 +120,17 @@ export const useProductStore = defineStore('product', () => {
 
   // Fetch products
   const fetchProducts = async () => {
+    // Check if we already have products and have initially fetched
+    if (products.value.length > 0 && hasInitiallyFetched.value) {
+      return // Skip fetching if we already have data
+    }
+    
     loading.value = true
     try {
       const data = await apiService.getProducts()
       products.value = data
       totalCount.value = data.length
-      
-      // Client-side pagination
-      saveToStorage()
+      hasInitiallyFetched.value = true
     } catch (error) {
       console.error('Error fetching products:', error)
     } finally {
@@ -174,20 +204,40 @@ export const useProductStore = defineStore('product', () => {
   const setSearchQuery = (query: string) => {
     searchQuery.value = query
     currentPage.value = 1 // Reset to first page when searching
-    saveToStorage()
   }
 
   // Set current page
   const setCurrentPage = (page: number) => {
     currentPage.value = page
-    saveToStorage()
   }
 
   // Set items per page
   const setItemsPerPage = (items: number) => {
     itemsPerPage.value = items
     currentPage.value = 1 // Reset to first page when changing items per page
-    saveToStorage()
+  }
+  
+  // Set sort field and order
+  const setSorting = (field: string, order?: 'asc' | 'desc') => {
+    // If clicking on the same field, toggle the sort order
+    if (field === sortField.value && !order) {
+      // Toggle order: asc -> desc -> none -> asc
+      if (sortOrder.value === 'asc') {
+        sortOrder.value = 'desc'
+      } else if (sortOrder.value === 'desc') {
+        sortField.value = '' // No sorting
+      } else {
+        sortField.value = field
+        sortOrder.value = 'asc'
+      }
+    } else {
+      // New field or explicit order
+      sortField.value = field
+      sortOrder.value = order || 'asc'
+    }
+    
+    // Reset to first page when sorting
+    currentPage.value = 1
   }
 
   return {
@@ -198,9 +248,12 @@ export const useProductStore = defineStore('product', () => {
     currentPage,
     itemsPerPage,
     searchQuery,
+    sortField,
+    sortOrder,
     loading,
     selectedProduct,
     pageCount,
+    hasInitiallyFetched,
     fetchProducts,
     fetchProductDetail,
     addProduct,
@@ -209,6 +262,20 @@ export const useProductStore = defineStore('product', () => {
     setSearchQuery,
     setCurrentPage,
     setItemsPerPage,
+    setSorting,
     initFromStorage
   }
+}, {
+  persist: {
+    paths: [
+      'products', 
+      'hasInitiallyFetched', 
+      'totalCount', 
+      'currentPage', 
+      'itemsPerPage', 
+      'searchQuery', 
+      'sortField', 
+      'sortOrder'
+    ],
+  },
 })

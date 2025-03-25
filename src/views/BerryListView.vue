@@ -35,7 +35,7 @@
           <span class="mr-2 text-gray-700">Items per page:</span>
           <select
             v-model="itemsPerPage"
-            class="border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-orange"
+            class="border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-orange mr-8"
           >
             <option :value="10">10</option>
             <option :value="30">30</option>

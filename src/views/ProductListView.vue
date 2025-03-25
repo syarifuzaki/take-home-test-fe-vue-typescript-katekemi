@@ -35,7 +35,7 @@
           <span class="mr-2 text-gray-700">Items per page:</span>
           <select
             v-model="itemsPerPage"
-            class="border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-orange"
+            class="border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-orange pr-8"
           >
             <option :value="5">5</option>
             <option :value="10">10</option>
@@ -63,19 +63,88 @@
               Image
             </th>
             <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              @click="toggleSort('title')"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
             >
-              Name
+              <div class="flex items-center">
+                Name
+                <span class="ml-1">
+                  <BaseIcon
+                    v-if="sortField === 'title' && sortOrder === 'asc'"
+                    name="mdi:arrow-up"
+                    size="16"
+                    class="text-primary-orange"
+                  />
+                  <BaseIcon
+                    v-else-if="sortField === 'title' && sortOrder === 'desc'"
+                    name="mdi:arrow-down"
+                    size="16"
+                    class="text-primary-orange"
+                  />
+                  <BaseIcon
+                    v-else
+                    name="mdi:unfold-more-horizontal"
+                    size="16"
+                    class="text-gray-400"
+                  />
+                </span>
+              </div>
             </th>
             <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              @click="toggleSort('category')"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
             >
-              Category
+              <div class="flex items-center">
+                Category
+                <span class="ml-1">
+                  <BaseIcon
+                    v-if="sortField === 'category' && sortOrder === 'asc'"
+                    name="mdi:arrow-up"
+                    size="16"
+                    class="text-primary-orange"
+                  />
+                  <BaseIcon
+                    v-else-if="sortField === 'category' && sortOrder === 'desc'"
+                    name="mdi:arrow-down"
+                    size="16"
+                    class="text-primary-orange"
+                  />
+                  <BaseIcon
+                    v-else
+                    name="mdi:unfold-more-horizontal"
+                    size="16"
+                    class="text-gray-400"
+                  />
+                </span>
+              </div>
             </th>
             <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              @click="toggleSort('price')"
+              class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
             >
-              Price
+              <div class="flex items-center">
+                Price
+                <span class="ml-1">
+                  <BaseIcon
+                    v-if="sortField === 'price' && sortOrder === 'asc'"
+                    name="mdi:arrow-up"
+                    size="16"
+                    class="text-primary-orange"
+                  />
+                  <BaseIcon
+                    v-else-if="sortField === 'price' && sortOrder === 'desc'"
+                    name="mdi:arrow-down"
+                    size="16"
+                    class="text-primary-orange"
+                  />
+                  <BaseIcon
+                    v-else
+                    name="mdi:unfold-more-horizontal"
+                    size="16"
+                    class="text-gray-400"
+                  />
+                </span>
+              </div>
             </th>
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32"
@@ -105,7 +174,9 @@
                 class="h-12 w-12 object-contain"
               />
             </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+            <td
+              class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 max-w-[400px] truncate"
+            >
               <router-link
                 :to="{ name: 'product-detail', params: { id: product.id } }"
                 class="text-primary-navy hover:text-primary-orange hover:underline"
@@ -260,6 +331,7 @@ const {
   setCurrentPage,
   setItemsPerPage,
   deleteProduct,
+  setSorting,
   initFromStorage,
 } = productStore
 
@@ -270,6 +342,8 @@ const {
   currentPage,
   itemsPerPage,
   pageCount,
+  sortField,
+  sortOrder,
 } = storeToRefs(productStore)
 
 // Initialize from localStorage and fetch products
@@ -296,8 +370,18 @@ const searchQuery = computed({
   set: (value) => setSearchQuery(value),
 })
 
+// Function to toggle sorting
+function toggleSort(field: string) {
+  if (field === sortField.value) {
+    // Toggle between ascending, descending
+    const newOrder = sortOrder.value === 'asc' ? 'desc' : 'asc'
+    setSorting(field, newOrder)
+  } else {
+    // Default to ascending for a new field
+    setSorting(field, 'asc')
+  }
+}
+
 // Watch for changes in pagination to trigger data refresh
-watch([currentPage, itemsPerPage], () => {
-  // No need to refetch from API since we're doing client-side pagination
-})
+watch([currentPage, itemsPerPage], () => {})
 </script>

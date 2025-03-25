@@ -88,9 +88,7 @@
                   </template>
                 </div>
                 <span class="ml-2 text-sm text-gray-600">
-                  {{ selectedProduct.rating.rate }} ({{
-                    selectedProduct.rating.count
-                  }}
+                  {{ selectedProduct.rating.rate }} ({{ selectedProduct.rating.count }}
                   reviews)
                 </span>
               </div>

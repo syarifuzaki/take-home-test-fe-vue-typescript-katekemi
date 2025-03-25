@@ -77,7 +77,7 @@
             <label class="text-sm text-gray-700">Show:</label>
             <select
               v-model="localItemsPerPage"
-              class="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent"
+              class="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent pr-8"
               @change="handleItemsPerPageChange"
             >
               <option :value="10">10</option>
