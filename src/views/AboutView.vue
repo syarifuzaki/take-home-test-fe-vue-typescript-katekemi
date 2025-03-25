@@ -3,7 +3,7 @@
     <div class="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-8">
       <h1 class="text-3xl font-bold text-gray-800 mb-4">{{ t('about.title') }}</h1>
       <p class="text-gray-600 mb-6">{{ t('about.description') }}</p>
-      
+
       <div class="mt-4 bg-gray-100 p-4 rounded-md">
         <h3 class="font-semibold mb-2">Technologies Used:</h3>
         <ul class="list-disc pl-5 space-y-1">
@@ -26,8 +26,9 @@
             <h2 class="text-xl font-semibold mb-4">Icon Sets</h2>
             <div class="prose max-w-none mb-6">
               <p>
-                Dengan menggunakan Iconify, Anda memiliki akses ke lebih dari 100,000 icon dari berbagai set
-                icon populer seperti Material Design, FontAwesome, Feather Icons, dan lainnya.
+                Dengan menggunakan Iconify, Anda memiliki akses ke lebih dari 100,000 icon
+                dari berbagai set icon populer seperti Material Design, FontAwesome,
+                Feather Icons, dan lainnya.
               </p>
             </div>
 
@@ -151,17 +152,27 @@
           <section>
             <h2 class="text-xl font-semibold mb-4">Cara Penggunaan</h2>
             <div class="prose max-w-none">
-              <pre class="language-html"><code>&lt;BaseIcon name="mdi:heart" size="24" color="primary" /&gt;</code></pre>
+              <pre
+                class="language-html"
+              ><code>&lt;BaseIcon name="mdi:heart" size="24" color="primary" /&gt;</code></pre>
               <p>Props yang tersedia:</p>
               <ul>
                 <li><code>name</code>: Nama icon dari Iconify (wajib)</li>
                 <li><code>size</code>: Ukuran icon dalam piksel (default: 24)</li>
-                <li><code>color</code>: Warna icon (primary, success, warning, danger, secondary)</li>
+                <li>
+                  <code>color</code>: Warna icon (primary, success, warning, danger,
+                  secondary)
+                </li>
                 <li><code>className</code>: Kelas CSS tambahan</li>
               </ul>
               <p>
                 Untuk melihat semua icon yang tersedia, kunjungi
-                <a href="https://icon-sets.iconify.design" target="_blank" rel="noopener noreferrer" class="text-blue-600">
+                <a
+                  href="https://icon-sets.iconify.design"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-600"
+                >
                   Iconify Icon Sets
                 </a>
               </p>
@@ -175,7 +186,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import BaseIcon from '../components/BaseIcon.vue'
+import BaseIcon from '@/components/BaseIcon.vue'
 
 const { t } = useI18n()
 </script>

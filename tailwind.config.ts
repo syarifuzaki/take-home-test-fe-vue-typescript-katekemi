@@ -8,7 +8,18 @@ export default <Config> {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+      },
+      colors: {
+        primary: {
+          red: "#e21c21",
+          navy: "#172b4d",
+          orange: "#ff8f00",
+        }
+      }
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),
