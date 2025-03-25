@@ -318,7 +318,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
+import { onMounted, watch, computed } from 'vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useProductStore } from '@/stores/productStore'
@@ -329,7 +329,6 @@ const {
   fetchProducts,
   setSearchQuery,
   setCurrentPage,
-  setItemsPerPage,
   deleteProduct,
   setSorting,
   initFromStorage,

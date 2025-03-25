@@ -1,4 +1,3 @@
-// src/stores/pokemonStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import axios from 'axios'

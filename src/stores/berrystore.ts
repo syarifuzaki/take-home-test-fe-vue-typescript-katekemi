@@ -1,4 +1,3 @@
-// src/stores/berryStore.ts
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import apiService, { BerryListItem, Berry, Product } from '@/services/api'

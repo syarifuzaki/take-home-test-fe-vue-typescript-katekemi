@@ -128,9 +128,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import BaseIcon from '@/components/BaseIcon.vue'
-import { useRoute } from 'vue-router'
 
-const route = useRoute()
 const props = defineProps({
   sidebarOpen: Boolean,
   sidebarOpenDesktop: Boolean,
@@ -140,35 +138,8 @@ const emit = defineEmits(['toggleSidebar'])
 
 // Manage submenu states
 const subMenuOpen = ref(true) // Open by default
-const typeMenuOpen = ref(false)
 
 function toggleSubMenu() {
   subMenuOpen.value = !subMenuOpen.value
 }
-
-function toggleTypeMenu() {
-  typeMenuOpen.value = !typeMenuOpen.value
-}
-
-// Pokémon type data for the submenu
-const pokemonTypes = [
-  { name: 'normal', displayName: 'Normal', color: 'bg-gray-400' },
-  { name: 'fire', displayName: 'Fire', color: 'bg-red-500' },
-  { name: 'water', displayName: 'Water', color: 'bg-blue-500' },
-  { name: 'grass', displayName: 'Grass', color: 'bg-green-500' },
-  { name: 'electric', displayName: 'Electric', color: 'bg-yellow-500' },
-  { name: 'ice', displayName: 'Ice', color: 'bg-blue-300' },
-  { name: 'fighting', displayName: 'Fighting', color: 'bg-red-700' },
-  { name: 'poison', displayName: 'Poison', color: 'bg-purple-500' },
-  { name: 'ground', displayName: 'Ground', color: 'bg-yellow-700' },
-  { name: 'flying', displayName: 'Flying', color: 'bg-indigo-300' },
-  { name: 'psychic', displayName: 'Psychic', color: 'bg-pink-500' },
-  { name: 'bug', displayName: 'Bug', color: 'bg-green-600' },
-  { name: 'rock', displayName: 'Rock', color: 'bg-yellow-800' },
-  { name: 'ghost', displayName: 'Ghost', color: 'bg-purple-700' },
-  { name: 'dragon', displayName: 'Dragon', color: 'bg-indigo-700' },
-  { name: 'dark', displayName: 'Dark', color: 'bg-gray-800' },
-  { name: 'steel', displayName: 'Steel', color: 'bg-gray-500' },
-  { name: 'fairy', displayName: 'Fairy', color: 'bg-pink-300' },
-]
 </script>
