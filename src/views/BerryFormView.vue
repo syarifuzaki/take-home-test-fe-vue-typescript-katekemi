@@ -136,11 +136,13 @@ import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useBerryStore } from '@/stores/berryStore'
 import type { Product } from '@/services/api'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const router = useRouter()
 const berryStore = useBerryStore()
-const { loading, addProduct, updateProduct, getProduct } = berryStore
+const { addProduct, updateProduct, getProduct } = berryStore
+const { loading } = storeToRefs(berryStore)
 
 const submitting = ref(false)
 const form = reactive<Product>({

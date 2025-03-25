@@ -131,17 +131,12 @@ import { useRoute } from 'vue-router'
 import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useBerryStore } from '@/stores/berryStore'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const berryStore = useBerryStore()
-const {
-  berries,
-  selectedBerry,
-  loading,
-  fetchBerries,
-  fetchBerryDetail,
-  fetchBerryByName,
-} = berryStore
+const { fetchBerries, fetchBerryDetail, fetchBerryByName } = berryStore
+const { berries, selectedBerry, loading } = storeToRefs(berryStore)
 
 const selectedBerryName = ref('')
 

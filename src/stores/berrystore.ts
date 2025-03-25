@@ -15,7 +15,7 @@ export const useBerryStore = defineStore('berry', () => {
   const filteredBerries = computed(() => {
     if (!searchQuery.value) return berries.value
     
-    return berries.value.filter(berry => 
+    return berries.value.filter((berry: any) => 
       berry.name.toLowerCase().includes(searchQuery.value.toLowerCase())
     )
   })
@@ -51,7 +51,7 @@ export const useBerryStore = defineStore('berry', () => {
       totalCount.value = response.count
       
       // Sort berries by name in ascending order
-      berries.value.sort((a, b) => a.name.localeCompare(b.name))
+      berries.value.sort((a: any, b: any) => a.name.localeCompare(b.name))
       
       saveToStorage()
     } catch (error) {

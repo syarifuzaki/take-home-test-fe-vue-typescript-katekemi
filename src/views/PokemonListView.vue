@@ -296,14 +296,14 @@
         <SkeletonLoader type="detail" />
       </div>
 
-      <div v-else-if="selectedPokemon" class="py-2">
+      <div v-else-if="selectedPokemon">
         <!-- Tabs navigation -->
         <div class="border-b border-gray-200 mb-4">
           <nav class="flex space-x-8 overflow-x-auto">
             <button
               @click="setActiveTab('about')"
               :class="[
-                'px-1 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
+                'px-1 py-2 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                 activeTab === 'about'
                   ? 'border-primary-orange text-primary-orange'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
@@ -314,7 +314,7 @@
             <button
               @click="setActiveTab('stats')"
               :class="[
-                'px-1 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
+                'px-1 py-2 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                 activeTab === 'stats'
                   ? 'border-primary-orange text-primary-orange'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
@@ -325,7 +325,7 @@
             <button
               @click="setActiveTab('evolution')"
               :class="[
-                'px-1 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
+                'px-1 py-2 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                 activeTab === 'evolution'
                   ? 'border-primary-orange text-primary-orange'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
@@ -336,7 +336,7 @@
             <button
               @click="setActiveTab('moves')"
               :class="[
-                'px-1 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
+                'px-1 py-2 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                 activeTab === 'moves'
                   ? 'border-primary-orange text-primary-orange'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
@@ -845,9 +845,24 @@ import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import BaseModal from '@/components/BaseModal.vue'
 import { usePokemonStore } from '@/stores/pokemonStore'
+import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const pokemonStore = usePokemonStore()
+const {
+  fetchPokemon,
+  fetchPokemonDetail,
+  setSearchQuery,
+  setCurrentPage,
+  setItemsPerPage,
+  closeModal,
+  initFromStorage,
+  toggleFavorite,
+  getRandomPokemon,
+  setSortOrder,
+  setActiveTab,
+} = pokemonStore
+
 const {
   pokemon,
   filteredPokemon,
@@ -866,19 +881,7 @@ const {
   sortOrder,
   englishFlavorText,
   pokemonGenus,
-  fetchPokemon,
-  fetchPokemonDetail,
-  setSearchQuery,
-  setCurrentPage,
-  setItemsPerPage,
-  closeModal,
-  initFromStorage,
-  toggleFavorite,
-  getRandomPokemon,
-  setSortOrder,
-  setActiveTab,
-  processData,
-} = pokemonStore
+} = storeToRefs(pokemonStore)
 
 // Local state to ensure proper reactivity
 const localSearchQuery = ref('')

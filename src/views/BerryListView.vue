@@ -223,16 +223,10 @@ import { ref, onMounted, watch, computed } from 'vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import { useBerryStore } from '@/stores/berryStore'
+import { storeToRefs } from 'pinia'
 
 const berryStore = useBerryStore()
 const {
-  berries,
-  filteredBerries,
-  totalCount,
-  currentPage,
-  itemsPerPage,
-  loading,
-  pageCount,
   fetchBerries,
   setSearchQuery,
   setCurrentPage,
@@ -240,10 +234,20 @@ const {
   initFromStorage,
 } = berryStore
 
+const {
+  loading,
+  berries,
+  filteredBerries,
+  currentPage,
+  itemsPerPage,
+  totalCount,
+  pageCount,
+} = storeToRefs(berryStore)
+
 // Initialize from localStorage and set up watchers
-onMounted(() => {
-  initFromStorage()
-  fetchBerries()
+onMounted(async () => {
+  // initFromStorage()
+  await fetchBerries()
 })
 
 // Helper function to get berry ID from URL
