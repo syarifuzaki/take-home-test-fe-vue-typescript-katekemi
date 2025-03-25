@@ -1,45 +1,37 @@
+<!-- src/components/BaseModal.vue -->
 <template>
   <Teleport to="body">
-    <transition name="modal-fade">
+    <div
+      v-if="modelValue"
+      class="modal-backdrop"
+      @click="closeOnOutsideClick && $emit('update:modelValue', false)"
+    >
       <div
-        v-if="modelValue"
-        class="modal-backdrop"
-        @click="closeOnOutsideClick && $emit('update:modelValue', false)"
-        @keydown.esc="$emit('update:modelValue', false)"
-        tabindex="0"
-        ref="modalBackdropRef"
+        :class="[
+          'modal-content',
+          size === 'large' ? 'max-w-4xl' : size === 'small' ? 'max-w-md' : 'max-w-2xl',
+        ]"
+        @click.stop
       >
-        <div
-          :class="[
-            'modal-content',
-            size === 'large' ? 'max-w-4xl' : size === 'small' ? 'max-w-md' : 'max-w-2xl',
-          ]"
-          @click.stop
-        >
-          <div class="modal-header">
-            <h3 class="modal-title">{{ title }}</h3>
-            <button
-              @click="$emit('update:modelValue', false)"
-              class="modal-close"
-              aria-label="Close modal"
-            >
-              <BaseIcon name="mdi:close" size="24" />
-            </button>
-          </div>
-          <div class="modal-body" :class="{ 'p-0': noPadding }">
-            <slot></slot>
-          </div>
-          <div v-if="$slots.footer" class="modal-footer">
-            <slot name="footer"></slot>
-          </div>
+        <div class="modal-header">
+          <h3 class="modal-title">{{ title }}</h3>
+          <button @click="$emit('update:modelValue', false)" class="modal-close">
+            <BaseIcon name="mdi:close" size="24" />
+          </button>
+        </div>
+        <div class="modal-body" :class="{ 'p-0': noPadding }">
+          <slot></slot>
+        </div>
+        <div v-if="$slots.footer" class="modal-footer">
+          <slot name="footer"></slot>
         </div>
       </div>
-    </transition>
+    </div>
   </Teleport>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { watch } from 'vue'
 import BaseIcon from '@/components/BaseIcon.vue'
 
 const props = defineProps({
@@ -68,39 +60,12 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
-// Handle keyboard events
-const modalBackdropRef = ref<HTMLElement | null>(null)
-
-const handleKeyDown = (e: KeyboardEvent) => {
-  if (e.key === 'Escape' && props.modelValue) {
-    emit('update:modelValue', false)
-  }
-}
-
-// Focus trap within modal
-const focusTrap = () => {
-  if (modalBackdropRef.value) {
-    modalBackdropRef.value.focus()
-  }
-}
-
-// Set up event listeners
-onMounted(() => {
-  document.addEventListener('keydown', handleKeyDown)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('keydown', handleKeyDown)
-})
-
 // Handle body scroll lock
 watch(
   () => props.modelValue,
   (newVal) => {
     if (newVal) {
       document.body.style.overflow = 'hidden'
-      // Set focus after a short delay to ensure the modal is rendered
-      setTimeout(focusTrap, 50)
     } else {
       document.body.style.overflow = ''
     }
@@ -120,7 +85,6 @@ watch(
   justify-content: center;
   align-items: center;
   z-index: 50;
-  outline: none;
   backdrop-filter: blur(2px);
 }
 
@@ -193,22 +157,6 @@ watch(
   z-index: 10;
   border-bottom-left-radius: 0.75rem;
   border-bottom-right-radius: 0.75rem;
-}
-
-/* Animation */
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-
-.modal-fade-enter-from {
-  opacity: 0;
-  transform: scale(0.95);
-}
-
-.modal-fade-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
 }
 
 /* Scrollbar styling */

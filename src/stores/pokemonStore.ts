@@ -129,10 +129,10 @@ export interface Pokemon {
   types: string[]
   favorite: boolean
 }
-
 export const usePokemonStore = defineStore('pokemon', () => {
   // State
   const pokemon = ref<PokemonItem[]>([])
+  const rawPokemon = ref<PokemonItem[]>([])
   const totalCount = ref(0)
   const currentPage = ref(1)
   const itemsPerPage = ref(10)
@@ -147,6 +147,7 @@ export const usePokemonStore = defineStore('pokemon', () => {
   const favorites = ref<{[key: string]: boolean}>({})
   const filterType = ref('')
   const sortOrder = ref('asc')
+  const initialized = ref(false)
   
   // Load favorites from localStorage
   const loadFavorites = () => {
@@ -167,9 +168,11 @@ export const usePokemonStore = defineStore('pokemon', () => {
     saveFavorites()
   }
   
-  // Computed
-  const filteredPokemon = computed(() => {
-    let result = pokemon.value
+  // Process raw data - apply filtering and sorting
+  const processData = () => {
+    if (!rawPokemon.value.length) return
+    
+    let result = [...rawPokemon.value]
     
     // Filter by search query
     if (searchQuery.value) {
@@ -179,13 +182,18 @@ export const usePokemonStore = defineStore('pokemon', () => {
     }
     
     // Sort by name
-    result = [...result].sort((a, b) => {
+    result = result.sort((a, b) => {
       return sortOrder.value === 'asc' 
         ? a.name.localeCompare(b.name) 
         : b.name.localeCompare(a.name)
     })
     
-    return result
+    pokemon.value = result
+  }
+  
+  // Computed
+  const filteredPokemon = computed(() => {
+    return pokemon.value
   })
 
   // Get the page count based on total items and items per page
@@ -228,6 +236,7 @@ export const usePokemonStore = defineStore('pokemon', () => {
     if (storedFilterType) filterType.value = storedFilterType
     
     loadFavorites()
+    initialized.value = true
   }
 
   // Save to localStorage
@@ -243,13 +252,21 @@ export const usePokemonStore = defineStore('pokemon', () => {
   const fetchPokemon = async () => {
     loading.value = true
     try {
+      // Make sure we've initialized from localStorage before fetching
+      if (!initialized.value) {
+        initFromStorage()
+      }
+      
       const offset = (currentPage.value - 1) * itemsPerPage.value
       const response = await axios.get<PokemonListResponse>(
         `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${itemsPerPage.value}`
       )
-      pokemon.value = response.data.results
+      
+      rawPokemon.value = response.data.results
       totalCount.value = response.data.count
       
+      // Process the data
+      processData()
       saveToStorage()
     } catch (error) {
       console.error('Error fetching pokemon:', error)
@@ -258,11 +275,16 @@ export const usePokemonStore = defineStore('pokemon', () => {
     }
   }
 
+  // Show Pokemon detail modal
+  const showPokemonDetail = (urlOrId: string) => {
+    modalOpen.value = true
+    activeTab.value = 'about'
+    fetchPokemonDetail(urlOrId)
+  }
+
   // Fetch pokemon details by URL or ID
   const fetchPokemonDetail = async (urlOrId: string) => {
     detailLoading.value = true
-    activeTab.value = 'about'
-    modalOpen.value = true
     
     try {
       let url = urlOrId
@@ -276,7 +298,9 @@ export const usePokemonStore = defineStore('pokemon', () => {
       selectedPokemon.value = response.data
       
       // Fetch species data to get flavor text and evolution chain
-      await fetchSpeciesData(response.data.species.url)
+      if (response.data.species && response.data.species.url) {
+        await fetchSpeciesData(response.data.species.url)
+      }
     } catch (error) {
       console.error('Error fetching pokemon details:', error)
     } finally {
@@ -291,7 +315,7 @@ export const usePokemonStore = defineStore('pokemon', () => {
       selectedSpecies.value = response.data
       
       // Fetch evolution chain
-      if (response.data.evolution_chain) {
+      if (response.data.evolution_chain && response.data.evolution_chain.url) {
         await fetchEvolutionChain(response.data.evolution_chain.url)
       }
     } catch (error) {
@@ -312,12 +336,13 @@ export const usePokemonStore = defineStore('pokemon', () => {
   // Get random Pokemon
   const getRandomPokemon = async () => {
     const randomId = Math.floor(Math.random() * 898) + 1 // Gen 1-8 Pokemon
-    await fetchPokemonDetail(randomId.toString())
+    showPokemonDetail(randomId.toString())
   }
 
   // Set search query
   const setSearchQuery = (query: string) => {
     searchQuery.value = query
+    processData()
     saveToStorage()
   }
 
@@ -325,6 +350,7 @@ export const usePokemonStore = defineStore('pokemon', () => {
   const setCurrentPage = (page: number) => {
     currentPage.value = page
     saveToStorage()
+    fetchPokemon()
   }
 
   // Set items per page
@@ -332,17 +358,20 @@ export const usePokemonStore = defineStore('pokemon', () => {
     itemsPerPage.value = items
     currentPage.value = 1 // Reset to first page when changing items per page
     saveToStorage()
+    fetchPokemon()
   }
   
   // Set filter type
   const setFilterType = (type: string) => {
     filterType.value = type
+    processData()
     saveToStorage()
   }
   
   // Set sort order
   const setSortOrder = (order: 'asc' | 'desc') => {
     sortOrder.value = order
+    processData()
     saveToStorage()
   }
 
@@ -354,9 +383,6 @@ export const usePokemonStore = defineStore('pokemon', () => {
   // Close modal
   const closeModal = () => {
     modalOpen.value = false
-    selectedPokemon.value = null
-    selectedSpecies.value = null
-    evolutionChain.value = null
   }
 
   return {
@@ -381,6 +407,7 @@ export const usePokemonStore = defineStore('pokemon', () => {
     pokemonGenus,
     fetchPokemon,
     fetchPokemonDetail,
+    showPokemonDetail,
     setSearchQuery,
     setCurrentPage,
     setItemsPerPage,
@@ -390,6 +417,7 @@ export const usePokemonStore = defineStore('pokemon', () => {
     getRandomPokemon,
     setFilterType,
     setSortOrder,
-    setActiveTab
+    setActiveTab,
+    processData
   }
 })

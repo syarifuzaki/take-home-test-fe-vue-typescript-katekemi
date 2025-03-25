@@ -33,10 +33,11 @@
               class="absolute left-3 top-3 text-gray-500"
             />
             <input
-              v-model="searchQuery"
+              v-model="localSearchQuery"
               type="text"
               placeholder="Search Pokémon by name..."
               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent"
+              @input="handleSearchInput"
             />
           </div>
         </div>
@@ -47,10 +48,10 @@
             <label class="text-sm text-gray-700">Sort:</label>
             <div class="inline-flex rounded-md shadow-sm">
               <button
-                @click="sortOrder = 'asc'"
+                @click="handleSortChange('asc')"
                 :class="[
                   'px-3 py-1.5 text-sm border border-gray-300 first:rounded-l-md last:rounded-r-md',
-                  sortOrder === 'asc'
+                  localSortOrder === 'asc'
                     ? 'bg-primary-orange text-white border-primary-orange'
                     : 'bg-white text-gray-700 hover:bg-gray-50',
                 ]"
@@ -58,10 +59,10 @@
                 A-Z
               </button>
               <button
-                @click="sortOrder = 'desc'"
+                @click="handleSortChange('desc')"
                 :class="[
                   'px-3 py-1.5 text-sm border border-gray-300 first:rounded-l-md last:rounded-r-md -ml-px',
-                  sortOrder === 'desc'
+                  localSortOrder === 'desc'
                     ? 'bg-primary-orange text-white border-primary-orange'
                     : 'bg-white text-gray-700 hover:bg-gray-50',
                 ]"
@@ -75,8 +76,9 @@
           <div class="flex items-center space-x-2">
             <label class="text-sm text-gray-700">Show:</label>
             <select
-              v-model="itemsPerPage"
+              v-model="localItemsPerPage"
               class="border border-gray-300 rounded-md px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary-orange focus:border-transparent"
+              @change="handleItemsPerPageChange"
             >
               <option :value="10">10</option>
               <option :value="30">30</option>
@@ -89,7 +91,7 @@
 
     <!-- Pokémon Table -->
     <div class="bg-white rounded-lg shadow-md overflow-hidden">
-      <SkeletonLoader v-if="loading" type="table" :rows="itemsPerPage" />
+      <SkeletonLoader v-if="loading" type="table" :rows="localItemsPerPage" />
 
       <div v-else-if="filteredPokemon.length === 0" class="py-12 text-center">
         <div class="mx-auto w-24 h-24 text-gray-400 mb-4">
@@ -128,7 +130,7 @@
             >
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm font-medium text-gray-500">
-                  {{ (currentPage - 1) * itemsPerPage + index + 1 }}
+                  {{ (currentPage - 1) * localItemsPerPage + index + 1 }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -178,15 +180,16 @@
     <!-- Pagination -->
     <div class="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
       <div class="text-sm text-gray-700 order-2 md:order-1">
-        Showing {{ filteredPokemon.length ? (currentPage - 1) * itemsPerPage + 1 : 0 }}-{{
-          Math.min(currentPage * itemsPerPage, totalCount)
+        Showing
+        {{ filteredPokemon.length ? (currentPage - 1) * localItemsPerPage + 1 : 0 }}-{{
+          Math.min(currentPage * localItemsPerPage, totalCount)
         }}
         of {{ totalCount }} items
       </div>
 
       <div class="flex space-x-1 order-1 md:order-2">
         <button
-          @click="currentPage > 1 && setCurrentPage(currentPage - 1)"
+          @click="currentPage > 1 && handlePageChange(currentPage - 1)"
           :disabled="currentPage <= 1"
           :class="[
             'px-3 py-1 rounded-md transition-colors',
@@ -202,7 +205,7 @@
           <button
             v-for="page in pageCount"
             :key="page"
-            @click="setCurrentPage(page)"
+            @click="handlePageChange(page)"
             :class="[
               'px-3 py-1 rounded-md transition-colors',
               currentPage === page
@@ -217,7 +220,7 @@
         <template v-else>
           <!-- First page -->
           <button
-            @click="setCurrentPage(1)"
+            @click="handlePageChange(1)"
             :class="[
               'px-3 py-1 rounded-md transition-colors',
               currentPage === 1
@@ -235,7 +238,7 @@
           <template v-for="page in pageCount" :key="page">
             <button
               v-if="page !== 1 && page !== pageCount && Math.abs(page - currentPage) <= 1"
-              @click="setCurrentPage(page)"
+              @click="handlePageChange(page)"
               :class="[
                 'px-3 py-1 rounded-md transition-colors',
                 currentPage === page
@@ -252,7 +255,7 @@
 
           <!-- Last page -->
           <button
-            @click="setCurrentPage(pageCount)"
+            @click="handlePageChange(pageCount)"
             :class="[
               'px-3 py-1 rounded-md transition-colors',
               currentPage === pageCount
@@ -265,7 +268,7 @@
         </template>
 
         <button
-          @click="currentPage < pageCount && setCurrentPage(currentPage + 1)"
+          @click="currentPage < pageCount && handlePageChange(currentPage + 1)"
           :disabled="currentPage >= pageCount"
           :class="[
             'px-3 py-1 rounded-md transition-colors',
@@ -296,11 +299,11 @@
       <div v-else-if="selectedPokemon" class="py-2">
         <!-- Tabs navigation -->
         <div class="border-b border-gray-200 mb-4">
-          <nav class="flex space-x-8">
+          <nav class="flex space-x-8 overflow-x-auto">
             <button
               @click="setActiveTab('about')"
               :class="[
-                'px-1 py-4 text-sm font-medium border-b-2 transition-colors',
+                'px-1 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                 activeTab === 'about'
                   ? 'border-primary-orange text-primary-orange'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
@@ -311,7 +314,7 @@
             <button
               @click="setActiveTab('stats')"
               :class="[
-                'px-1 py-4 text-sm font-medium border-b-2 transition-colors',
+                'px-1 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                 activeTab === 'stats'
                   ? 'border-primary-orange text-primary-orange'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
@@ -322,7 +325,7 @@
             <button
               @click="setActiveTab('evolution')"
               :class="[
-                'px-1 py-4 text-sm font-medium border-b-2 transition-colors',
+                'px-1 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                 activeTab === 'evolution'
                   ? 'border-primary-orange text-primary-orange'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
@@ -333,7 +336,7 @@
             <button
               @click="setActiveTab('moves')"
               :class="[
-                'px-1 py-4 text-sm font-medium border-b-2 transition-colors',
+                'px-1 py-4 text-sm font-medium border-b-2 whitespace-nowrap transition-colors',
                 activeTab === 'moves'
                   ? 'border-primary-orange text-primary-orange'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
@@ -650,7 +653,7 @@
 
                     <template
                       v-if="
-                        evolutionChain.chain.evolves_to[0].evolution_details[0].min_level
+                        evolutionChain.chain.evolves_to[0].evolution_details[0]?.min_level
                       "
                     >
                       at level
@@ -661,7 +664,7 @@
 
                     <template
                       v-else-if="
-                        evolutionChain.chain.evolves_to[0].evolution_details[0].item
+                        evolutionChain.chain.evolves_to[0].evolution_details[0]?.item
                       "
                     >
                       when exposed to a
@@ -695,7 +698,7 @@
                     <template
                       v-if="
                         evolutionChain.chain.evolves_to[0].evolves_to[0]
-                          .evolution_details[0].min_level
+                          .evolution_details[0]?.min_level
                       "
                     >
                       at level
@@ -708,7 +711,7 @@
                     <template
                       v-else-if="
                         evolutionChain.chain.evolves_to[0].evolves_to[0]
-                          .evolution_details[0].item
+                          .evolution_details[0]?.item
                       "
                     >
                       when exposed to a
@@ -836,12 +839,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, nextTick } from 'vue'
+import { useRoute } from 'vue-router'
 import BaseIcon from '@/components/BaseIcon.vue'
 import SkeletonLoader from '@/components/SkeletonLoader.vue'
 import BaseModal from '@/components/BaseModal.vue'
 import { usePokemonStore } from '@/stores/pokemonStore'
 
+const route = useRoute()
 const pokemonStore = usePokemonStore()
 const {
   pokemon,
@@ -872,24 +877,71 @@ const {
   getRandomPokemon,
   setSortOrder,
   setActiveTab,
+  processData,
 } = pokemonStore
 
-// Initialize from localStorage and set up watchers
-onMounted(() => {
-  initFromStorage()
-  fetchPokemon()
-})
-
-// Additional reactive state
+// Local state to ensure proper reactivity
+const localSearchQuery = ref('')
+const localSortOrder = ref('asc')
+const localItemsPerPage = ref(10)
 const moveSearchQuery = ref('')
 
-// Computed properties
-const searchQuery = computed({
-  get: () => pokemonStore.searchQuery,
-  set: (value) => setSearchQuery(value),
+// Initialize from store and set up local state
+const initializeComponent = async () => {
+  await initFromStorage()
+
+  // Set up local state from store
+  localSearchQuery.value = pokemonStore.searchQuery
+  localSortOrder.value = pokemonStore.sortOrder
+  localItemsPerPage.value = pokemonStore.itemsPerPage
+
+  // Fetch initial data
+  await fetchPokemon()
+}
+
+// Process URL query parameters if they exist
+const processQueryParams = () => {
+  if (route.query.type) {
+    pokemonStore.setFilterType(route.query.type as string)
+  }
+}
+
+// Initialize component
+onMounted(async () => {
+  await initializeComponent()
+  processQueryParams()
 })
 
-// Filtered moves
+// Handle search input changes with debounce
+let searchTimeout: number | null = null
+const handleSearchInput = () => {
+  if (searchTimeout) {
+    clearTimeout(searchTimeout)
+  }
+
+  searchTimeout = (setTimeout(() => {
+    setSearchQuery(localSearchQuery.value)
+    searchTimeout = null
+  }, 300) as unknown) as number
+}
+
+// Handle sort changes
+const handleSortChange = (order: 'asc' | 'desc') => {
+  localSortOrder.value = order
+  setSortOrder(order)
+}
+
+// Handle items per page change
+const handleItemsPerPageChange = () => {
+  setItemsPerPage(localItemsPerPage.value)
+}
+
+// Handle page changes
+const handlePageChange = (page: number) => {
+  setCurrentPage(page)
+}
+
+// Computed properties for moves filtering
 const filteredMoves = computed(() => {
   if (!selectedPokemon.value) return []
 
@@ -985,13 +1037,29 @@ function getStatValue(statName: string): number {
   return stat ? stat.base_stat : 0
 }
 
-// Show details for a Pokémon
 function showDetails(url: string): void {
-  fetchPokemonDetail(url)
+  pokemonStore.showPokemonDetail(url)
 }
 
-// Watch for changes in pagination to trigger data fetch
-watch([currentPage, itemsPerPage, sortOrder], () => {
-  fetchPokemon()
-})
+// Keep local and store values in sync
+watch(
+  () => pokemonStore.searchQuery,
+  (newValue) => {
+    localSearchQuery.value = newValue
+  }
+)
+
+watch(
+  () => pokemonStore.sortOrder,
+  (newValue) => {
+    localSortOrder.value = newValue
+  }
+)
+
+watch(
+  () => pokemonStore.itemsPerPage,
+  (newValue) => {
+    localItemsPerPage.value = newValue
+  }
+)
 </script>
