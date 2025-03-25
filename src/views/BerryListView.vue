@@ -365,10 +365,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import BaseIcon from '@/components/BaseIcon.vue'
-import SkeletonLoader from '@/components/SkeletonLoader.vue'
-import BaseModal from '@/components/BaseModal.vue'
-import { useBerryStore } from '@/stores/berryStore'
+import BaseIcon from '../components/BaseIcon.vue'
+import SkeletonLoader from '../components/SkeletonLoader.vue'
+import BaseModal from '../components/BaseModal.vue'
+import { useBerryStore } from '../stores/berryStore'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 

@@ -840,10 +840,10 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import BaseIcon from '@/components/BaseIcon.vue'
-import SkeletonLoader from '@/components/SkeletonLoader.vue'
-import BaseModal from '@/components/BaseModal.vue'
-import { usePokemonStore } from '@/stores/pokemonStore'
+import BaseIcon from '../components/BaseIcon.vue'
+import SkeletonLoader from '../components/SkeletonLoader.vue'
+import BaseModal from '../components/BaseModal.vue'
+import { usePokemonStore } from '../stores/pokemonStore'
 import { storeToRefs } from 'pinia'
 
 const route = useRoute()

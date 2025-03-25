@@ -205,7 +205,7 @@
                   <BaseIcon name="mdi:pencil" size="20" />
                 </router-link>
                 <button
-                  @click="handleDelete(product.id)"
+                  @click="handleDelete(product?.id)"
                   class="text-red-600 hover:text-red-800"
                 >
                   <BaseIcon name="mdi:delete" size="20" />
@@ -325,9 +325,9 @@
 
 <script setup lang="ts">
 import { onMounted, watch, computed } from 'vue'
-import BaseIcon from '@/components/BaseIcon.vue'
-import SkeletonLoader from '@/components/SkeletonLoader.vue'
-import { useProductStore } from '@/stores/productStore'
+import BaseIcon from '../components/BaseIcon.vue'
+import SkeletonLoader from '../components/SkeletonLoader.vue'
+import { useProductStore } from '../stores/productStore'
 import { storeToRefs } from 'pinia'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'

@@ -155,9 +155,9 @@
 <script setup lang="ts">
 import { onMounted, watch, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import BaseIcon from '@/components/BaseIcon.vue'
-import SkeletonLoader from '@/components/SkeletonLoader.vue'
-import { useProductStore } from '@/stores/productStore'
+import BaseIcon from '../components/BaseIcon.vue'
+import SkeletonLoader from '../components/SkeletonLoader.vue'
+import { useProductStore } from '../stores/productStore'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 
