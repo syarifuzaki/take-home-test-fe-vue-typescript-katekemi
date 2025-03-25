@@ -1,20 +1,37 @@
-
+// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import AboutView from '@/views/AboutView.vue'
+import DashboardView from '@/views/DashboardView.vue'
+import BerryListView from '@/views/BerryListView.vue'
+import BerryDetailView from '@/views/BerryDetailView.vue'
+import BerryFormView from '@/views/BerryFormView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'dashboard',
+      component: DashboardView
     },
     {
-      path: '/about',
-      name: 'about',
-      component: AboutView
+      path: '/berries',
+      name: 'berries',
+      component: BerryListView
+    },
+    {
+      path: '/berries/:id',
+      name: 'berry-detail',
+      component: BerryDetailView
+    },
+    {
+      path: '/berries/add',
+      name: 'berry-add',
+      component: BerryFormView
+    },
+    {
+      path: '/berries/edit/:id',
+      name: 'berry-edit',
+      component: BerryFormView
     }
   ]
 })

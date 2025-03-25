@@ -27,36 +27,38 @@
         <div class="grow">
           <div class="mb-4">
             <p class="text-gray-400 text-xs uppercase mb-2">Dashboard</p>
-            <a
-              href="#"
+            <router-link
+              :to="{ name: 'dashboard' }"
               :class="[
                 'flex items-center p-2 rounded transition-colors',
-                activeView === 'dashboard'
+                currentRoute === 'home'
                   ? 'bg-primary-orange text-white hover:bg-orange-500'
                   : 'hover:bg-gray-700',
               ]"
             >
               <i class="fas fa-home mr-3"></i>
               <span>Dashboard</span>
-            </a>
+            </router-link>
           </div>
 
-          <!-- <div class="mb-4">
+          <div class="mb-4">
             <p class="text-gray-400 text-xs uppercase mb-2">Data Management</p>
-            <a
-              href="#"
-              @click="setActiveView('employees')"
+            <router-link
+              :to="{ name: 'berries' }"
               :class="[
                 'flex items-center p-2 rounded transition-colors',
-                activeView === 'employees'
+                currentRoute === 'berries' ||
+                currentRoute === 'berry-detail' ||
+                currentRoute === 'berry-add' ||
+                currentRoute === 'berry-edit'
                   ? 'bg-primary-orange text-white hover:bg-orange-500'
                   : 'hover:bg-gray-700',
               ]"
             >
               <i class="fas fa-users mr-3"></i>
-              <span>Employees</span>
-            </a>
-          </div> -->
+              <span>Berries</span>
+            </router-link>
+          </div>
         </div>
 
         <div class="mt-8">
@@ -74,7 +76,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import BaseIcon from '@/components/BaseIcon.vue'
 
 const activeView = ref('dashboard')
@@ -84,4 +87,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['toggleSidebar'])
+const route = useRoute()
+const currentRoute = computed(() => route.name)
 </script>
