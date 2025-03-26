@@ -152,18 +152,12 @@
     <!-- Pagination -->
     <div class="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
       <div class="text-sm text-gray-700 order-2 md:order-1">
-        <!-- {{
-          t('berries.pagination.showing', {
-            from: filteredBerries.length ? (currentPage - 1) * localItemsPerPage + 1 : 0,
-            to: Math.min(currentPage * localItemsPerPage, totalCount),
-            total: totalCount,
-          })
-        }} -->
-        Showing
+        {{ t('berries.pagination.showing') }}
         {{ filteredBerries.length ? (currentPage - 1) * localItemsPerPage + 1 : 0 }}-{{
           Math.min(currentPage * localItemsPerPage, totalCount)
         }}
-        of {{ totalCount }} items
+        {{ t('berries.pagination.of') }} {{ totalCount }}
+        {{ t('berries.pagination.items') }}
       </div>
 
       <div class="flex space-x-1 order-1 md:order-2">

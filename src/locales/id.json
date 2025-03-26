@@ -31,7 +31,10 @@
       "actions": "Aksi"
     },
     "pagination": {
-      "showing": "Menampilkan {{from}} hingga {{to}} dari {{total}} item"
+      "showing": "Menampilkan",
+      "to": "hingga",
+      "of": "dari",
+      "items": "item"
     },
     "details": {
       "title": "Detail Berry",
@@ -97,13 +100,15 @@
         "successAdd": "Produk berhasil ditambahkan!",
         "successUpdate": "Produk berhasil diperbarui!",
         "error": "Gagal menyimpan produk. Silakan coba lagi."
-      }
+      },
+      "back": "Kembali ke list produk"
     },
     "list": {
       "title": "Basis Data Produk",
       "subtitle": "Jelajahi produk",
       "addButton": "Tambah Produk",
       "searchPlaceholder": "Cari produk...",
+      "itemsPerPage": "Tampilkan",
       "tableHeaders": {
         "number": "No",
         "image": "Gambar",
@@ -111,6 +116,12 @@
         "category": "Kategori",
         "price": "Harga",
         "actions": "Aksi"
+      },
+      "pagination": {
+        "showing": "Menampilkan",
+        "to": "hingga",
+        "of": "dari",
+        "items": "item"
       },
       "noProducts": "Tidak ada produk yang ditemukan. Coba sesuaikan pencarian.",
       "deleteConfirmation": "Apakah Anda yakin ingin menghapus produk ini?",

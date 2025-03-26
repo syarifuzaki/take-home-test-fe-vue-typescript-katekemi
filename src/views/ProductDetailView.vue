@@ -1,13 +1,13 @@
 <template>
   <div class="p-6">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">Product Details</h1>
+      <h1 class="text-2xl font-bold">{{ t('products.detail.title') }}</h1>
       <router-link
         :to="{ name: 'products' }"
         class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-md flex items-center"
       >
         <BaseIcon name="mdi:arrow-left" size="20" class="mr-1" />
-        Back to List
+        {{ t('products.form.back') }}
       </router-link>
     </div>
 
@@ -15,9 +15,9 @@
     <div class="bg-white rounded-md shadow p-6 mb-6">
       <div class="flex flex-col md:flex-row items-start md:items-center gap-4">
         <div class="w-full md:w-2/3">
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Select Product</label
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-1">{{
+            t('products.detail.selectProduct')
+          }}</label>
           <select
             v-model="selectedProductId"
             class="w-full border rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-primary-orange"
@@ -31,7 +31,7 @@
           @click="navigateToProduct"
           class="mt-4 md:mt-6 bg-primary-orange hover:bg-orange-600 text-white px-4 py-2 rounded-md"
         >
-          Pindah
+          {{ t('products.detail.navigateButton') }}
         </button>
       </div>
     </div>
@@ -95,7 +95,9 @@
           </div>
 
           <div>
-            <h3 class="text-lg font-medium text-primary-navy mb-2">Description</h3>
+            <h3 class="text-lg font-medium text-primary-navy mb-2">
+              {{ t('products.detail.description') }}
+            </h3>
             <p class="text-gray-700">{{ selectedProduct.description }}</p>
           </div>
 
@@ -104,14 +106,14 @@
               class="bg-primary-orange hover:bg-orange-600 text-white px-6 py-2 rounded-md flex items-center"
             >
               <BaseIcon name="mdi:cart" size="20" class="mr-2" />
-              Add to Cart
+              {{ t('products.detail.addToCart') }}
             </button>
             <router-link
               :to="{ name: 'product-edit', params: { id: selectedProduct.id } }"
               class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md flex items-center"
             >
               <BaseIcon name="mdi:pencil" size="20" class="mr-2" />
-              Edit
+              {{ t('products.detail.edit') }}
             </router-link>
           </div>
         </div>
@@ -119,25 +121,27 @@
 
       <!-- Additional Details -->
       <div class="border-t border-gray-200 p-6">
-        <h3 class="text-lg font-medium text-primary-navy mb-4">Product Details</h3>
+        <h3 class="text-lg font-medium text-primary-navy mb-4">
+          {{ t('products.detail.productDetails') }}
+        </h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="flex flex-col space-y-2">
             <div class="flex justify-between">
-              <span class="text-gray-600">Category:</span>
+              <span class="text-gray-600">{{ t('products.detail.category') }}:</span>
               <span class="font-medium capitalize">{{ selectedProduct.category }}</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600">Product ID:</span>
+              <span class="text-gray-600">{{ t('products.detail.productId') }}:</span>
               <span class="font-medium">{{ selectedProduct.id }}</span>
             </div>
           </div>
           <div class="flex flex-col space-y-2" v-if="selectedProduct.rating">
             <div class="flex justify-between">
-              <span class="text-gray-600">Rating:</span>
+              <span class="text-gray-600">{{ t('products.detail.rating') }}:</span>
               <span class="font-medium">{{ selectedProduct.rating.rate }}/5</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-600">Reviews:</span>
+              <span class="text-gray-600">{{ t('products.detail.reviews') }}:</span>
               <span class="font-medium">{{ selectedProduct.rating.count }}</span>
             </div>
           </div>
@@ -147,7 +151,7 @@
 
     <!-- No Product Selected -->
     <div v-else class="bg-white rounded-md shadow p-6 text-center py-10 text-gray-500">
-      No product selected or product not found
+      {{ t('products.detail.noProduct') }}
     </div>
   </div>
 </template>

@@ -5,8 +5,10 @@
       class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4"
     >
       <div>
-        <h1 class="text-2xl font-bold text-primary-navy">Products Database</h1>
-        <p class="text-gray-600 mt-1">Explore the produts</p>
+        <h1 class="text-2xl font-bold text-primary-navy">
+          {{ t('products.list.title') }}
+        </h1>
+        <p class="text-gray-600 mt-1">{{ t('products.list.subtitle') }}</p>
       </div>
 
       <router-link
@@ -14,7 +16,7 @@
         class="bg-primary-orange hover:bg-orange-600 text-white px-4 py-2 rounded-md flex items-center"
       >
         <BaseIcon name="mdi:plus" size="20" class="mr-1" />
-        Add Product
+        {{ t('products.list.addButton') }}
       </router-link>
     </div>
 
@@ -30,7 +32,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search products..."
+            :placeholder="t('products.list.searchPlaceholder')"
             class="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary-orange"
           />
         </div>
@@ -38,7 +40,7 @@
 
       <div class="flex items-center space-x-4">
         <label class="flex items-center">
-          <span class="mr-2 text-gray-700">Items per page:</span>
+          <span class="mr-2 text-gray-700">{{ t('products.list.itemsPerPage') }}:</span>
           <select
             v-model="itemsPerPage"
             class="border rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary-orange pr-8"
@@ -61,19 +63,19 @@
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-16"
             >
-              No
+              {{ t('products.list.tableHeaders.number') }}
             </th>
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24"
             >
-              Image
+              {{ t('products.list.tableHeaders.image') }}
             </th>
             <th
               @click="toggleSort('title')"
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
             >
               <div class="flex items-center">
-                Name
+                {{ t('products.list.tableHeaders.name') }}
                 <span class="ml-1">
                   <BaseIcon
                     v-if="sortField === 'title' && sortOrder === 'asc'"
@@ -101,7 +103,7 @@
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
             >
               <div class="flex items-center">
-                Category
+                {{ t('products.list.tableHeaders.category') }}
                 <span class="ml-1">
                   <BaseIcon
                     v-if="sortField === 'category' && sortOrder === 'asc'"
@@ -129,7 +131,7 @@
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
             >
               <div class="flex items-center">
-                Price
+                {{ t('products.list.tableHeaders.price') }}
                 <span class="ml-1">
                   <BaseIcon
                     v-if="sortField === 'price' && sortOrder === 'asc'"
@@ -155,14 +157,14 @@
             <th
               class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-32"
             >
-              Actions
+              {{ t('products.list.tableHeaders.actions') }}
             </th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
           <tr v-if="paginatedProducts.length === 0">
             <td colspan="6" class="px-6 py-4 text-center text-gray-500">
-              No products found. Try adjusting your search.
+              {{ t('products.list.noProducts') }}
             </td>
           </tr>
           <tr
@@ -220,10 +222,11 @@
     <!-- Pagination -->
     <div class="flex justify-between items-center mt-6">
       <div class="text-sm text-gray-700">
-        Showing {{ (currentPage - 1) * itemsPerPage + 1 }}-{{
-          Math.min(currentPage * itemsPerPage, totalCount)
-        }}
-        of {{ totalCount }} items
+        {{ t('products.list.pagination.showing') }}
+        {{ (currentPage - 1) * itemsPerPage + 1 }} {{ t('products.list.pagination.to') }}
+        {{ Math.min(currentPage * itemsPerPage, totalCount) }}
+        {{ t('products.list.pagination.of') }} {{ totalCount }}
+        {{ t('products.list.pagination.items') }}
       </div>
 
       <div class="flex space-x-1">
@@ -363,16 +366,16 @@ onMounted(async () => {
 
 // Handle delete button click
 async function handleDelete(id: number): Promise<void> {
-  if (confirm('Are you sure you want to delete this product?')) {
+  if (confirm(t('products.list.deleteConfirmation'))) {
     try {
       await deleteProduct(id)
-      toast('Product deleted successfully!', {
+      toast(t('products.list.deleteSuccess'), {
         theme: 'dark',
         type: 'success',
         dangerouslyHTMLString: true,
       })
     } catch (error) {
-      toast('Error deleting product. Please try again.', {
+      toast(t('products.list.deleteError'), {
         theme: 'dark',
         type: 'error',
         dangerouslyHTMLString: true,

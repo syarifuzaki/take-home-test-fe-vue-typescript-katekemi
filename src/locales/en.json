@@ -31,7 +31,10 @@
       "actions": "Actions"
     },
     "pagination": {
-      "showing": "Showing {{from}} to {{to}} of {{total}} items"
+      "showing": "Showing",
+      "to": "to",
+      "of": "of",
+      "items": "items"
     },
     "details": {
       "title": "Berry Details",
@@ -97,13 +100,15 @@
         "successAdd": "Product added successfully!",
         "successUpdate": "Product updated successfully!",
         "error": "Failed to save product. Please try again."
-      }
+      },
+      "back": "Back to list products"
     },
     "list": {
       "title": "Products Database",
       "subtitle": "Explore the products",
       "addButton": "Add Product",
       "searchPlaceholder": "Search products...",
+      "itemsPerPage": "Tampilkan",
       "tableHeaders": {
         "number": "No",
         "image": "Image",
@@ -111,6 +116,12 @@
         "category": "Category",
         "price": "Price",
         "actions": "Actions"
+      },
+      "pagination": {
+        "showing": "Menampilkan",
+        "to": "hingga",
+        "of": "dari",
+        "items": "item"
       },
       "noProducts": "No products found. Try adjusting your search.",
       "deleteConfirmation": "Are you sure you want to delete this product?",
